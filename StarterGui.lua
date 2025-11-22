@@ -1,8 +1,8 @@
 local url = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/QuantV-Transparent.png"
 local savePath = "QuantV/Images/QuantV.png"
 
-local soundURL = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/Sounds/Win11-Startup.mp3"
-local soundPath = "QuantV/Sounds/Win11-Startup.mp3"
+local soundURL = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/Sounds/Win11-Startup.ogg"
+local soundPath = "QuantV/Sounds/Win11-Startup.ogg"
 
 if not isfolder("QuantV") then makefolder("QuantV") end
 if not isfolder("QuantV/Images") then makefolder("QuantV/Images") end
@@ -69,8 +69,9 @@ local line2In = TweenService:Create(line2, TweenInfo.new(.6, Enum.EasingStyle.Qu
     BackgroundTransparency = 1
 })
 
-blurIn:Play()
 snd:Play()
+task.wait(.75)
+blurIn:Play()
 line1In:Play()
 task.wait(.15)
 line2In:Play()
