@@ -1,10 +1,15 @@
 local url = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/QuantV-Transparent.png"
 local savePath = "QuantV/Images/QuantV.png"
 
+local soundURL = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/Sounds/Win11-Startup.mp3"
+local soundPath = "QuantV/Sounds/Win11-Startup.mp3"
+
 if not isfolder("QuantV") then makefolder("QuantV") end
 if not isfolder("QuantV/Images") then makefolder("QuantV/Images") end
+if not isfolder("QuantV/Sounds") then makefolder("QuantV/Sounds") end
 
 writefile(savePath, game:HttpGet(url))
+writefile(soundPath, game:HttpGet(soundURL))
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
@@ -20,6 +25,11 @@ local gui = Instance.new("ScreenGui")
 gui.Parent = playerGui
 gui.IgnoreGuiInset = true
 gui.ResetOnSpawn = false
+
+local snd = Instance.new("Sound")
+snd.SoundId = getcustomasset(soundPath)
+snd.Volume = 3
+snd.Parent = gui
 
 local logo = Instance.new("ImageLabel")
 logo.Parent = gui
@@ -60,6 +70,7 @@ local line2In = TweenService:Create(line2, TweenInfo.new(.6, Enum.EasingStyle.Qu
 })
 
 blurIn:Play()
+snd:Play()
 line1In:Play()
 task.wait(.15)
 line2In:Play()
