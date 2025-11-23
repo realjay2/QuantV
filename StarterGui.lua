@@ -1,6 +1,6 @@
 local url = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/QuantV-Transparent.png"
 local savePath = "QuantV/Images/QuantV.png"
-
+local SeedVersion = "e274eeff768c6396088ec6eb091f4bf4d47ab1e0"
 local soundURL = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/Sounds/Win11-Startup.ogg"
 local soundPath = "QuantV/Sounds/Win11-Startup.ogg"
 
@@ -90,3 +90,5 @@ logoIn.Completed:Connect(function()
         end)
     end)
 end)
+
+warn('Spoofed Bypassed Seed: ' .. SeedVersion )
