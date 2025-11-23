@@ -14,16 +14,16 @@ if not DevTesting and _G.RanQuantV then
     blur.Parent = workspace.CurrentCamera
 
     local flash = Instance.new("Frame", gui)
-    flash.Size = UDim2.new(1,0,1,0)
-    flash.BackgroundColor3 = Color3.fromRGB(255,0,0)
+    flash.Size = UDim2.new(1, 0, 1, 0)
+    flash.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
     flash.BackgroundTransparency = 1
 
     local msg = Instance.new("TextLabel", gui)
-    msg.Size = UDim2.new(1,0,1,0)
+    msg.Size = UDim2.new(1, 0, 1, 0)
     msg.BackgroundTransparency = 1
     msg.Text = "You have already ran QuantV"
     msg.TextScaled = true
-    msg.TextColor3 = Color3.new(1,1,1)
+    msg.TextColor3 = Color3.new(1, 1, 1)
     msg.TextTransparency = 1
     msg.Font = Enum.Font.GothamBold
 
