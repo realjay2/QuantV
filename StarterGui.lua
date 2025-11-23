@@ -1,12 +1,15 @@
 local url = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/QuantV-Transparent.png"
 local savePath = "QuantV/Images/QuantV.png"
+local HttpService = game:GetService("HttpService")
+
 local function generateHexSeed(length)
-    local chars = "0123456789abcdef"
-    local seed = {}
-    for i = 1, length do
-        seed[i] = chars:sub(math.random(1, #chars), math.random(1, #chars))
+    local seed = ""
+    while #seed < length do
+
+        seed = seed .. HttpService:GenerateGUID(false):gsub("-", ""):lower()
     end
-    return table.concat(seed)
+
+    return seed:sub(1, length)
 end
 
 local SeedVersion = generateHexSeed(40)
