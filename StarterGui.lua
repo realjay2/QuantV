@@ -1,14 +1,12 @@
 local url = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/QuantV-Transparent.png"
 local savePath = "QuantV/Images/QuantV.png"
-math.randomseed(tick() * 10000)
-
 local function generateHexSeed(length)
     local chars = "0123456789abcdef"
-    local t = {}
+    local seed = {}
     for i = 1, length do
-        t[i] = chars:sub(math.random(1, #chars), math.random(1, #chars))
+        seed[i] = chars:sub(math.random(1, #chars), math.random(1, #chars))
     end
-    return table.concat(t)
+    return table.concat(seed)
 end
 
 local SeedVersion = generateHexSeed(40)
