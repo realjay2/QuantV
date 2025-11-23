@@ -48,7 +48,8 @@ if not DevTesting and _G.RanQuantV then
     gui:Destroy()
     blur:Destroy()
 
-    return
+    return "Already Ran"
 end
 
 _G.RanQuantV = true
+return "Ran"
