@@ -28,7 +28,7 @@ if not DevTesting and _G.RanQuantV then
     msg.Font = Enum.Font.GothamBold
 
     local sound = Instance.new("Sound", gui)
-    sound.SoundId = "rbxassetid://107294127858629"
+    sound.SoundId = "rbxassetid://8499261098"
     sound.Volume = 1
     sound:Play()
 
