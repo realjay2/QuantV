@@ -1,6 +1,17 @@
 local url = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/QuantV-Transparent.png"
 local savePath = "QuantV/Images/QuantV.png"
-local SeedVersion = "e274eeff768c6396088ec6eb091f4bf4d47ab1e0"
+math.randomseed(tick() * 10000)
+
+local function generateHexSeed(length)
+    local chars = "0123456789abcdef"
+    local t = {}
+    for i = 1, length do
+        t[i] = chars:sub(math.random(1, #chars), math.random(1, #chars))
+    end
+    return table.concat(t)
+end
+
+local SeedVersion = generateHexSeed(40)
 local soundURL = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/Sounds/Win11-Startup.ogg"
 local soundPath = "QuantV/Sounds/Win11-Startup.ogg"
 
