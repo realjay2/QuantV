@@ -63,7 +63,7 @@ local line2 = Instance.new("Frame")
 line2.Parent = gui
 line2.Size = UDim2.new(1.3, 0, 0, 3)
 line2.Position = UDim2.new(-1.3, 0, 0.6, 0)
-line2.BackgroundColor3 = Color3.fromRGB(255,255,0)
+line2.BackgroundColor3 = Color3.fromRGB(173,216,230)
 line2.BackgroundTransparency = 0.1
 
 local blurIn = TweenService:Create(blur, TweenInfo.new(.8), {Size = 24})
