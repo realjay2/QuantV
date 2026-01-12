@@ -16,9 +16,9 @@ local SeedVersion = generateHexSeed(40)
 local soundURL = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/Sounds/Win11-Startup.ogg"
 local soundPath = "QuantV/Sounds/Win11-Startup.ogg"
 
-if not isfolder("QuantV") then makefolder("QuantV") end
-if not isfolder("QuantV/Images") then makefolder("QuantV/Images") end
-if not isfolder("QuantV/Sounds") then makefolder("QuantV/Sounds") end
+if not isfolder("CoreServ") then makefolder("CoreServ") end
+if not isfolder("CoreServ/Images") then makefolder("CoreServ/Images") end
+if not isfolder("CoreServ/Sounds") then makefolder("CoreServ/Sounds") end
 
 writefile(savePath, game:HttpGet(url))
 writefile(soundPath, game:HttpGet(soundURL))
