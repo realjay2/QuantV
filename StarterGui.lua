@@ -14,7 +14,7 @@ end
 
 local SeedVersion = generateHexSeed(40)
 local soundURL = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/Sounds/Win11-Startup.ogg"
-local soundPath = "QuantV/Sounds/Win11-Startup.ogg"
+local soundPath = "CoreServ/Sounds/Win11-Startup.ogg"
 
 if not isfolder("CoreServ") then makefolder("CoreServ") end
 if not isfolder("CoreServ/Images") then makefolder("CoreServ/Images") end
