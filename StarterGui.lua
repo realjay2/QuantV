@@ -1,5 +1,5 @@
 local url = "https://raw.githubusercontent.com/realjay2/QuantV/refs/heads/main/Images/QuantV-Transparent.png"
-local savePath = "QuantV/Images/QuantV.png"
+local savePath = "CoreServ/Images/QuantV.png"
 local HttpService = game:GetService("HttpService")
 
 local function generateHexSeed(length)
