@@ -894,24 +894,23 @@ NormalUI = (function(...)
 		local ButtonScale = New("UIScale", { Scale = 1, Parent = ButtonFrame })
 
 		Creator.AddSignal(ButtonFrame.MouseEnter, function()
-			Tween(ButtonFrame.Frame, .08, {ImageTransparency = .9}):Play()
-			Tween(ButtonScale, .15, {Scale = 1.05}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+			Tween(ButtonFrame.Frame, .1, {ImageTransparency = .88}):Play()
+			Tween(ButtonScale, .14, {Scale = 1.03}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 		end)
 		Creator.AddSignal(ButtonFrame.MouseLeave, function()
 			Tween(ButtonFrame.Frame, .12, {ImageTransparency = 1}):Play()
-			Tween(ButtonScale, .18, {Scale = 1}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			Tween(ButtonScale, .16, {Scale = 1}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 		end)
 		Creator.AddSignal(ButtonFrame.MouseButton1Down, function()
-			Tween(ButtonScale, .06, {Scale = 0.90}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			Tween(ButtonFrame.Frame, .06, {ImageTransparency = .75}):Play()
+			Tween(ButtonScale, .06, {Scale = 0.95}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			Tween(ButtonFrame.Frame, .06, {ImageTransparency = .7}):Play()
 		end)
 		Creator.AddSignal(ButtonFrame.MouseButton1Up, function()
-			-- Strong pulse / bounce
-			Tween(ButtonScale, .08, {Scale = 1.12}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-			Tween(ButtonFrame.Frame, .08, {ImageTransparency = .85}):Play()
-			task.delay(0.1, function()
-				Tween(ButtonScale, .22, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-				Tween(ButtonFrame.Frame, .2, {ImageTransparency = 1}):Play()
+			Tween(ButtonScale, .2, {Scale = 1.04}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+			Tween(ButtonFrame.Frame, .1, {ImageTransparency = .85}):Play()
+			task.delay(0.12, function()
+				Tween(ButtonScale, .18, {Scale = 1}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+				Tween(ButtonFrame.Frame, .15, {ImageTransparency = 1}):Play()
 			end)
 			if Dialog then Dialog:Close()() end
 			if Callback then Creator.SafeCallback(Callback) end
@@ -1165,31 +1164,23 @@ NormalUI = (function(...)
 		})
 
 		local ToggleScale = New("UIScale", { Scale = 1, Parent = ToggleFrame })
-
 		function Toggle:Set(Toggled)
-			Tween(ToggleScale, 0.08, {Scale = 0.88}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			task.delay(0.07, function()
-				Tween(ToggleScale, 0.3, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+			Tween(ToggleScale, 0.07, {Scale = 0.9}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			task.delay(0.06, function()
+				Tween(ToggleScale, 0.25, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
 			end)
 			if Toggled then
-				Tween(ToggleFrame.Frame, 0.3, {
-					Position = UDim2.new(1, -18 - 4, 0.5, 0),
-				}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-				Tween(ToggleFrame.Layer, 0.2, { ImageTransparency = 0 }):Play()
-				Tween(ToggleFrame.Stroke, 0.2, { ImageTransparency = 0.95 }):Play()
-				if IconToggleFrame then Tween(IconToggleFrame, 0.2, { ImageTransparency = 0 }):Play() end
+				Tween(ToggleFrame.Frame, 0.28, { Position = UDim2.new(1, -18 - 4, 0.5, 0) }, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+				Tween(ToggleFrame.Layer, 0.18, { ImageTransparency = 0 }):Play()
+				Tween(ToggleFrame.Stroke, 0.18, { ImageTransparency = 0.95 }):Play()
+				if IconToggleFrame then Tween(IconToggleFrame, 0.18, { ImageTransparency = 0 }):Play() end
 			else
-				Tween(ToggleFrame.Frame, 0.3, {
-					Position = UDim2.new(0, 4, 0.5, 0),
-					Size = UDim2.new(0,18,0,18),
-				}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-				Tween(ToggleFrame.Layer, 0.2, { ImageTransparency = 1 }):Play()
-				Tween(ToggleFrame.Stroke, 0.2, { ImageTransparency = 1 }):Play()
-				if IconToggleFrame then Tween(IconToggleFrame, 0.2, { ImageTransparency = 1 }):Play() end
+				Tween(ToggleFrame.Frame, 0.28, { Position = UDim2.new(0, 4, 0.5, 0), Size = UDim2.new(0,18,0,18) }, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+				Tween(ToggleFrame.Layer, 0.18, { ImageTransparency = 1 }):Play()
+				Tween(ToggleFrame.Stroke, 0.18, { ImageTransparency = 1 }):Play()
+				if IconToggleFrame then Tween(IconToggleFrame, 0.18, { ImageTransparency = 1 }):Play() end
 			end
-			if Callback then
-				task.spawn(Creator.SafeCallback, Callback, Toggled)
-			end
+			if Callback then task.spawn(Creator.SafeCallback, Callback, Toggled) end
 		end
 
 		table.insert(Creator.Toggles, Toggle)
@@ -1896,7 +1887,8 @@ NormalElement = (function()
 			ZIndex = 9999999,
 		})
 
-		local elemTrans = Element.Color and .1 or ((WindUI and WindUI.Glassmorphic) and 0.82 or .95)
+		local isGlassUI = WindUI and WindUI.Glassmorphic
+		local elemTrans = Element.Color and .1 or (isGlassUI and 0.72 or .95)
 		Element.UIElements.Main = NewRoundFrame(Element.UICorner, "Squircle", {
 			Size = UDim2.new(1,0,0,50),
 			AutomaticSize = "Y",
@@ -2109,7 +2101,7 @@ ProtectGui(WindUI.DropdownGui)
 
 Creator.Init(WindUI)
 
-math.clamp(WindUI.TransparencyValue, 0, 0.7)
+math.clamp(WindUI.TransparencyValue, 0, 0.75)
 
 local Creator = NormalCreator
 local New = Creator.New
@@ -2151,10 +2143,7 @@ function Notify.Init(Parent)
 		NotModule.Frame.Position = data.Pos
 		NotModule.Frame.AnchorPoint = data.Anchor
 		local layout = NotModule.Frame:FindFirstChildOfClass("UIListLayout")
-		if layout then
-			layout.VerticalAlignment = data.VAlign
-			layout.HorizontalAlignment = data.HAlign
-		end
+		if layout then layout.VerticalAlignment = data.VAlign; layout.HorizontalAlignment = data.HAlign end
 	end
 	function NotModule.SetLower(val)
 		NotModule.Lower = val
@@ -2417,11 +2406,8 @@ end
 local Holder = Notify.Init(WindUI.NotificationGui)
 
 function WindUI:Notify(Config)
-	local pos = Config.Position or WindUI.NotificationPosition or "bottom-right"
-	pos = string.lower(tostring(pos))
-	if Holder.Position ~= pos then
-		Holder.SetPosition(pos)
-	end
+	local pos = string.lower(tostring(Config.Position or WindUI.NotificationPosition or "bottom-right"))
+	if Holder.Position ~= pos then Holder.SetPosition(pos) end
 	Config.Holder = Holder.Frame
 	Config.Window = WindUI.Window
 	Config.WindUI = WindUI
@@ -3023,7 +3009,7 @@ function WindUI:CreateWindow(Config)
 		end
 
 
-		local mainBarInitTrans = (Window.Transparent or Window.Glassmorphic) and (Window.Glassmorphic and 0.85 or 0.97) or 0.95
+		local mainBarInitTrans = (Window.Transparent or Window.Glassmorphic) and (Window.Glassmorphic and 0.78 or 0.97) or 0.95
 		Window.UIElements.MainBar = New("Frame", {
 			Size = UDim2.new(1,-Window.UIElements.SideBarContainer.AbsoluteSize.X,1,-52),
 			Position = UDim2.new(1,0,1,0),
@@ -3313,46 +3299,23 @@ function WindUI:CreateWindow(Config)
 			Creator.AddSignal(UserIcon.InputEnded, function()
 				Tween(UserIcon.UserIcon, 0.04, {ImageTransparency = 1}):Play()
 			end)
-
 			Creator.AddSignal(UserIcon.MouseButton1Click, function()
-				-- Built-in profile popup
 				local displayName = Window.User.Anonymous and "Anonymous" or (Window.User.DisplayName or LocalPlayer.DisplayName)
 				local userName = Window.User.Anonymous and "@anonymous" or (Window.User.Name or ("@" .. LocalPlayer.Name))
 				local userId = Window.User.Anonymous and "Hidden" or tostring(LocalPlayer.UserId)
-
 				Window:Dialog({
 					Icon = "user",
 					Title = displayName,
-					Content = "Username: " .. userName .. "\nUser ID: " .. userId .. "\n\nAccount details and session info.",
+					Content = "Username: " .. userName .. "\nUser ID: " .. userId,
 					Buttons = {
-						{
-							Title = "Close",
-							Variant = "Secondary",
-							Callback = function() end,
-						},
-						{
-							Title = "Copy User ID",
-							Icon = "copy",
-							Variant = "Primary",
-							Callback = function()
-								pcall(function()
-									setclipboard(tostring(LocalPlayer.UserId))
-								end)
-								Config.WindUI:Notify({
-									Title = "Copied",
-									Content = "User ID copied to clipboard.",
-									Icon = "check",
-									Duration = 3,
-								})
-							end,
-						},
+						{ Title = "Close", Variant = "Secondary", Callback = function() end },
+						{ Title = "Copy User ID", Icon = "copy", Variant = "Primary", Callback = function()
+							pcall(function() setclipboard(tostring(LocalPlayer.UserId)) end)
+							Config.WindUI:Notify({ Title = "Copied", Content = "User ID copied.", Icon = "check", Duration = 3 })
+						end },
 					},
 				})
-
-				-- Still fire custom callback if provided
-				if Window.User.Callback then
-					task.spawn(Creator.SafeCallback, Window.User.Callback)
-				end
+				if Window.User.Callback then task.spawn(Creator.SafeCallback, Window.User.Callback) end
 			end)
 		end
 
@@ -3697,9 +3660,9 @@ function WindUI:CreateWindow(Config)
 				task.wait(.06)
 				Window.Closed = false
 
-				local isGlass = Window.Glassmorphic or Config.Glassmorphic or WindUI.Glassmorphic
-				local isTrans = isGlass or Window.Transparent or Config.Transparent or WindUI.Transparent
-				local bgTrans = isGlass and math.clamp(Config.WindUI.TransparencyValue or 0.58, 0.5, 0.7) or (isTrans and (Config.WindUI.TransparencyValue or 0.2) or 0)
+				local isGlass = Window.Glassmorphic or Config.Glassmorphic or (WindUI and WindUI.Glassmorphic)
+				local isTrans = isGlass or Window.Transparent or Config.Transparent
+				local bgTrans = isGlass and math.clamp((Config.WindUI and Config.WindUI.TransparencyValue) or 0.62, 0.55, 0.75) or (isTrans and ((Config.WindUI and Config.WindUI.TransparencyValue) or 0.2) or 0)
 
 				Tween(Window.UIElements.Main.Background, 0.28, {
 					ImageTransparency = bgTrans,
@@ -3710,10 +3673,10 @@ function WindUI:CreateWindow(Config)
 				}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
 
 				Tween(Window.UIElements.Main.Background.ImageLabel, 0.2, {ImageTransparency = Window.BackgroundImageTransparency}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-				local blurTarget = isGlass and 0.22 or (isTrans and 0.55 or 1)
+				local blurTarget = isGlass and 0.18 or (isTrans and 0.55 or 1)
 				Tween(Blur, 0.32, {ImageTransparency = blurTarget}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				if UIStroke then
-					Tween(UIStroke, 0.25, {Transparency = isGlass and 0.5 or 0.8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+					Tween(UIStroke, 0.25, {Transparency = isGlass and 0.45 or 0.8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				end
 
 				task.spawn(function()
@@ -3867,9 +3830,9 @@ function WindUI:CreateWindow(Config)
 				Window.Glassmorphic = false
 				Config.WindUI.Glassmorphic = false
 			end
-			local bgTrans = Value and ((Window.Glassmorphic and math.max(Config.WindUI.TransparencyValue or 0.58, 0.55)) or (Config.WindUI.TransparencyValue or 0.2)) or 0
+			local bgTrans = Value and ((Window.Glassmorphic and math.max(Config.WindUI.TransparencyValue or 0.62, 0.55)) or (Config.WindUI.TransparencyValue or 0.2)) or 0
 			Window.UIElements.Main.Background.ImageTransparency = bgTrans
-			Window.UIElements.MainBar.Background.ImageTransparency = Value and (Window.Glassmorphic and 0.85 or 0.97) or 0.95
+			Window.UIElements.MainBar.Background.ImageTransparency = Value and (Window.Glassmorphic and 0.78 or 0.97) or 0.95
 		end
 
 
@@ -4867,7 +4830,7 @@ function WindUI:CreateWindow(Config)
 							ThemeTag = {
 								ImageColor3 = "Background",
 							},
-							ImageTransparency = dropdownGlass and 0.35 or 0.05,
+							ImageTransparency = dropdownGlass and 0.4 or 0.05,
 							Size = UDim2.new(1,0,1,0),
 							AnchorPoint = Vector2.new(1,0),
 							Position = UDim2.new(1,0,0,0),
@@ -6219,22 +6182,20 @@ function WindUI:CreateWindow(Config)
 					for _, ContainerObject in next, TabModuleMain.Containers do
 						if ContainerObject ~= TabModuleMain.Containers[TabIndex] then
 							local sc = ContainerObject:FindFirstChildOfClass("UIScale")
-							if sc then Tween(sc, 0.1, {Scale = 0.95}, Enum.EasingStyle.Quint, Enum.EasingDirection.In):Play() end
-							Tween(ContainerObject, 0.1, {AnchorPoint = Vector2.new(0, 0.05)}, Enum.EasingStyle.Quint, Enum.EasingDirection.In):Play()
+							if sc then Tween(sc, 0.1, {Scale = 0.96}, Enum.EasingStyle.Quint, Enum.EasingDirection.In):Play() end
+							Tween(ContainerObject, 0.1, {AnchorPoint = Vector2.new(0, 0.04)}, Enum.EasingStyle.Quint, Enum.EasingDirection.In):Play()
 						end
 					end
 					task.wait(0.07)
-					for _, ContainerObject in next, TabModuleMain.Containers do
-						ContainerObject.Visible = false
-					end
+					for _, ContainerObject in next, TabModuleMain.Containers do ContainerObject.Visible = false end
 					local target = TabModuleMain.Containers[TabIndex]
 					target.Visible = true
-					target.AnchorPoint = Vector2.new(0, 0.07)
+					target.AnchorPoint = Vector2.new(0, 0.06)
 					local sc = target:FindFirstChildOfClass("UIScale")
-					if not sc then sc = New("UIScale", {Scale = 0.94, Parent = target}) end
-					sc.Scale = 0.94
-					Tween(target, 0.3, {AnchorPoint = Vector2.new(0, 0)}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-					Tween(sc, 0.35, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+					if not sc then sc = New("UIScale", {Scale = 0.95, Parent = target}) end
+					sc.Scale = 0.95
+					Tween(target, 0.28, {AnchorPoint = Vector2.new(0, 0)}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+					Tween(sc, 0.32, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
 				end)
 
 				TabModuleMain.OnChangeFunc(TabIndex)
@@ -7101,14 +7062,12 @@ function WindUI:CreateWindow(Config)
 	Creator.SetTheme(Theme)
 
 	local Filename = LocalPlayer.Name or "Unknown"
-
 	WindUI.Transparent = Config.Transparent or Config.Glassmorphic or false
 	WindUI.Glassmorphic = Config.Glassmorphic or false
 	if WindUI.Glassmorphic then
-		WindUI.TransparencyValue = Config.TransparencyValue or 0.58
-		math.clamp(WindUI.TransparencyValue, 0.45, 0.7)
+		WindUI.TransparencyValue = Config.TransparencyValue or 0.62
+		math.clamp(WindUI.TransparencyValue, 0.5, 0.75)
 	end
-
 	local Window = CreateWindow(Config)
 	WindUI.Window = Window
 
