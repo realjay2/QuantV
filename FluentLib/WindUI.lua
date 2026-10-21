@@ -9,7 +9,7 @@ isfile, writefile, getcustomasset, identifyexecutor, setclipboard, readfile, mak
 
 local WindUI
 local NormalCreator,NormalDialog, NormalUI, NormalElement
-
+a
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
@@ -1884,8 +1884,8 @@ NormalElement = (function()
 			ZIndex = 9999999,
 		})
 
-		-- Solid grey boxes matching button style; glass only adds slight depth
-		local elemTrans = Element.Color and .1 or ((WindUI and WindUI.Glassmorphic) and 0.92 or .95)
+		-- All boxes share the same glass transparency
+		local elemTrans = Element.Color and .1 or ((WindUI and WindUI.Glassmorphic) and 0.86 or .95)
 		Element.UIElements.Main = NewRoundFrame(Element.UICorner, "Squircle", {
 			Size = UDim2.new(1,0,0,50),
 			AutomaticSize = "Y",
@@ -2098,7 +2098,7 @@ ProtectGui(WindUI.DropdownGui)
 
 Creator.Init(WindUI)
 
-math.clamp(WindUI.TransparencyValue, 0, 0.5)
+math.clamp(WindUI.TransparencyValue, 0, 0.6)
 
 local Creator = NormalCreator
 local New = Creator.New
@@ -3006,8 +3006,7 @@ function WindUI:CreateWindow(Config)
 		end
 
 
-		-- Content panel: solid grey like element buttons (not washed)
-		local mainBarInitTrans = (Window.Transparent or Window.Glassmorphic) and (Window.Glassmorphic and 0.93 or 0.97) or 0.95
+		local mainBarInitTrans = (Window.Transparent or Window.Glassmorphic) and (Window.Glassmorphic and 0.88 or 0.97) or 0.95
 		Window.UIElements.MainBar = New("Frame", {
 			Size = UDim2.new(1,-Window.UIElements.SideBarContainer.AbsoluteSize.X,1,-52),
 			Position = UDim2.new(1,0,1,0),
@@ -3660,10 +3659,9 @@ function WindUI:CreateWindow(Config)
 
 				local isGlass = Window.Glassmorphic or Config.Glassmorphic or (WindUI and WindUI.Glassmorphic)
 				local isTrans = isGlass or Window.Transparent or Config.Transparent
-				-- Dark glass: low transparency keeps it grey/solid
-				local bgTrans = isGlass and math.clamp((Config.WindUI and Config.WindUI.TransparencyValue) or 0.22, 0.15, 0.35) or (isTrans and ((Config.WindUI and Config.WindUI.TransparencyValue) or 0.15) or 0)
+				local bgTrans = isGlass and math.clamp((Config.WindUI and Config.WindUI.TransparencyValue) or 0.42, 0.3, 0.55) or (isTrans and ((Config.WindUI and Config.WindUI.TransparencyValue) or 0.15) or 0)
 
-				Tween(Window.UIElements.Main.Background, 0.25, {
+				Tween(Window.UIElements.Main.Background, 0.28, {
 					ImageTransparency = bgTrans,
 				}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 
@@ -3672,10 +3670,10 @@ function WindUI:CreateWindow(Config)
 				}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
 
 				Tween(Window.UIElements.Main.Background.ImageLabel, 0.2, {ImageTransparency = Window.BackgroundImageTransparency}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-				local blurTarget = isGlass and 0.45 or (isTrans and 0.65 or 1)
+				local blurTarget = isGlass and 0.32 or (isTrans and 0.6 or 1)
 				Tween(Blur, 0.3, {ImageTransparency = blurTarget}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				if UIStroke then
-					Tween(UIStroke, 0.25, {Transparency = isGlass and 0.7 or 0.8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+					Tween(UIStroke, 0.25, {Transparency = isGlass and 0.55 or 0.8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				end
 
 				task.spawn(function()
@@ -3829,9 +3827,9 @@ function WindUI:CreateWindow(Config)
 				Window.Glassmorphic = false
 				Config.WindUI.Glassmorphic = false
 			end
-			local bgTrans = Value and ((Window.Glassmorphic and math.clamp(Config.WindUI.TransparencyValue or 0.22, 0.15, 0.35)) or (Config.WindUI.TransparencyValue or 0.15)) or 0
+			local bgTrans = Value and ((Window.Glassmorphic and math.clamp(Config.WindUI.TransparencyValue or 0.42, 0.3, 0.55)) or (Config.WindUI.TransparencyValue or 0.15)) or 0
 			Window.UIElements.Main.Background.ImageTransparency = bgTrans
-			Window.UIElements.MainBar.Background.ImageTransparency = Value and (Window.Glassmorphic and 0.93 or 0.97) or 0.95
+			Window.UIElements.MainBar.Background.ImageTransparency = Value and (Window.Glassmorphic and 0.88 or 0.97) or 0.95
 		end
 
 
@@ -4829,7 +4827,7 @@ function WindUI:CreateWindow(Config)
 							ThemeTag = {
 								ImageColor3 = "Background",
 							},
-							ImageTransparency = dropdownGlass and 0.12 or 0.05,
+							ImageTransparency = dropdownGlass and 0.28 or 0.05,
 							Size = UDim2.new(1,0,1,0),
 							AnchorPoint = Vector2.new(1,0),
 							Position = UDim2.new(1,0,0,0),
@@ -7064,9 +7062,9 @@ function WindUI:CreateWindow(Config)
 	WindUI.Transparent = Config.Transparent or Config.Glassmorphic or false
 	WindUI.Glassmorphic = Config.Glassmorphic or false
 	if WindUI.Glassmorphic then
-		-- Subtle dark glass - stays grey, not washed white
-		WindUI.TransparencyValue = Config.TransparencyValue or 0.22
-		math.clamp(WindUI.TransparencyValue, 0.15, 0.35)
+		-- Balanced frosted glass (consistent across all UI)
+		WindUI.TransparencyValue = Config.TransparencyValue or 0.42
+		math.clamp(WindUI.TransparencyValue, 0.3, 0.55)
 	end
 	local Window = CreateWindow(Config)
 	WindUI.Window = Window
