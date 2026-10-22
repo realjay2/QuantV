@@ -1885,7 +1885,7 @@ NormalElement = (function()
 		})
 
 		-- Solid grey boxes matching button style; glass only adds slight depth
-		local elemTrans = Element.Color and .1 or ((WindUI and WindUI.Glassmorphic) and 0.91 or .95)
+		local elemTrans = Element.Color and .18 or ((WindUI and WindUI.Glassmorphic) and 0.955 or .95)
 		Element.UIElements.Main = NewRoundFrame(Element.UICorner, "Squircle", {
 			Size = UDim2.new(1,0,0,50),
 			AutomaticSize = "Y",
@@ -1895,7 +1895,7 @@ NormalElement = (function()
 			--AutoButtonColor = false,
 			Parent = Config.Parent,
 			ThemeTag = {
-				ImageColor3 = not Element.Color and "Text" or nil
+				ImageColor3 = not Element.Color and (WindUI and WindUI.Glassmorphic and Color3.fromRGB(255,255,255) or "Text") or nil
 			},
 			ImageColor3 = Element.Color and Color3.fromHex(Creator.Colors[Element.Color]) or nil
 		}, {
@@ -1912,12 +1912,12 @@ NormalElement = (function()
 		if Element.Hover then
 			Creator.AddSignal(Element.UIElements.Main.MouseEnter, function()
 				if CanHover then
-					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .15 or .9}):Play()
+					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .22 or .945}):Play()
 				end
 			end)
 			Creator.AddSignal(Element.UIElements.Main.InputEnded, function()
 				if CanHover then
-					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .1 or .95}):Play()
+					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .18 or .965}):Play()
 				end
 			end)
 		end
@@ -2943,7 +2943,7 @@ function WindUI:CreateWindow(Config)
 				1, 
 				(not Window.HideSearchBar and -39-6 or 0) - 32
 			),
-			Position = UDim2.new(0,0,1,-32),
+			Position = UDim2.new(0,0,1,-42),
 			AnchorPoint = Vector2.new(0,1),
 			BackgroundTransparency = 1,
 			ScrollBarThickness = 0,
@@ -3007,7 +3007,7 @@ function WindUI:CreateWindow(Config)
 
 
 		-- Content panel: lightweight clear glass; let the game world show through
-		local mainBarInitTrans = Window.Glassmorphic and 0.90 or ((Window.Transparent) and 0.92 or 0.95)
+		local mainBarInitTrans = Window.Glassmorphic and 0.965 or ((Window.Transparent) and 0.94 or 0.95)
 		Window.UIElements.MainBar = New("Frame", {
 			Size = UDim2.new(1,-Window.UIElements.SideBarContainer.AbsoluteSize.X,1,-52),
 			Position = UDim2.new(1,0,1,0),
@@ -3035,7 +3035,7 @@ function WindUI:CreateWindow(Config)
 				local rim = New("UICorner", {CornerRadius = UDim.new(0, radius), Parent = parent})
 				local stroke = New("UIStroke", {
 					Color = Color3.fromRGB(225, 241, 255),
-					Transparency = 0.72,
+					Transparency = 0.48,
 					Thickness = 1,
 					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 					Parent = parent,
@@ -3048,9 +3048,9 @@ function WindUI:CreateWindow(Config)
 						ColorSequenceKeypoint.new(1, Color3.fromRGB(255,255,255)),
 					}),
 					Transparency = NumberSequence.new({
-						NumberSequenceKeypoint.new(0, 0.88),
-						NumberSequenceKeypoint.new(0.5, 0.97),
-						NumberSequenceKeypoint.new(1, 0.86),
+						NumberSequenceKeypoint.new(0, 0.94),
+						NumberSequenceKeypoint.new(0.5, 0.985),
+						NumberSequenceKeypoint.new(1, 0.93),
 					}),
 					Parent = parent,
 				})
@@ -3070,14 +3070,16 @@ function WindUI:CreateWindow(Config)
 		local sidebarCollapsed = false
 		local expandedSidebarWidth = Window.SideBarWidth
 		local compactSidebarWidth = 58
-		local sidebarToggle = New("TextButton", {
-			Name = "SidebarCollapseButton", Text = "‹", TextSize = 22,
-			Font = Enum.Font.GothamMedium, TextColor3 = Color3.fromRGB(242,248,255),
-			BackgroundColor3 = Color3.fromRGB(255,255,255), BackgroundTransparency = 0.94,
-			AutoButtonColor = false, Size = UDim2.new(0,32,0,34),
-			Position = UDim2.new(0, Window.UIPadding/2 + 43, 0, 2), ZIndex = 50,
+		local sidebarToggle = New("ImageButton", {
+			Name = "SidebarCollapseButton", Image = Creator.Icon("panel-left-close")[1],
+			ImageRectSize = Creator.Icon("panel-left-close")[2].ImageRectSize,
+			ImageRectOffset = Creator.Icon("panel-left-close")[2].ImageRectPosition,
+			ImageColor3 = Color3.fromRGB(235,246,255), ImageTransparency = 0.05,
+			BackgroundColor3 = Color3.fromRGB(255,255,255), BackgroundTransparency = 0.985,
+			AutoButtonColor = false, Size = UDim2.new(0,34,0,34),
+			Position = UDim2.new(0, Window.UIPadding/2 + 40, 0, 2), ZIndex = 50,
 			Parent = Window.UIElements.SideBarContainer,
-		}, {New("UICorner", {CornerRadius = UDim.new(0,10)}), New("UIStroke", {Color = Color3.fromRGB(220,240,255), Transparency = 0.82, Thickness = 1})})
+		}, {New("UICorner", {CornerRadius = UDim.new(0,10)}), New("UIStroke", {Color = Color3.fromRGB(220,240,255), Transparency = 0.68, Thickness = 1})})
 		local savedLabelStates = {}
 		local savedIconPositions = {}
 		local function setSidebarCollapsed(collapsed)
@@ -3085,11 +3087,20 @@ function WindUI:CreateWindow(Config)
 			local width = collapsed and compactSidebarWidth or expandedSidebarWidth
 			Tween(Window.UIElements.SideBarContainer, 0.25, {Size = UDim2.new(0,width,Window.UIElements.SideBarContainer.Size.Y.Scale,Window.UIElements.SideBarContainer.Size.Y.Offset)}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 			Tween(Window.UIElements.MainBar, 0.25, {Size = UDim2.new(1,-width,1,-52)}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			sidebarToggle.Text = collapsed and "›" or "‹"
+			local iconName = collapsed and "panel-left-open" or "panel-left-close"
+			local iconData = Creator.Icon(iconName)
+			sidebarToggle.Image = iconData[1]
+			sidebarToggle.ImageRectSize = iconData[2].ImageRectSize
+			sidebarToggle.ImageRectOffset = iconData[2].ImageRectPosition
 			for _, obj in ipairs(Window.UIElements.SideBar:GetDescendants()) do
 				if obj:IsA("TextLabel") then
 					if savedLabelStates[obj] == nil then savedLabelStates[obj] = obj.Visible end
 					obj.Visible = collapsed and false or savedLabelStates[obj]
+				elseif obj:IsA("TextButton") then
+					if obj.Name ~= "SidebarCollapseButton" and obj.Name ~= "SearchButton" then
+						if savedLabelStates[obj] == nil then savedLabelStates[obj] = obj.Text end
+						obj.Text = collapsed and "" or savedLabelStates[obj]
+					end
 				elseif obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
 					if savedIconPositions[obj] == nil then savedIconPositions[obj] = {obj.AnchorPoint, obj.Position} end
 					if obj.Name == "Icon" then
@@ -3290,89 +3301,34 @@ function WindUI:CreateWindow(Config)
 			)
 
 			UserIcon = New("TextButton", {
-				Size = UDim2.new(0,
-					(Window.UIElements.SideBarContainer.AbsoluteSize.X)-(Window.UIPadding/2),
-					0,
-					42+(Window.UIPadding)
-				),
-				Position = UDim2.new(0,Window.UIPadding/2,1,-(Window.UIPadding/2)),
-				AnchorPoint = Vector2.new(0,1),
-				BackgroundTransparency = 1,
+				Name = "ProfileButton",
+				Size = UDim2.new(0, 48, 0, 48),
+				Position = UDim2.new(0.5, 0, 1, -10),
+				AnchorPoint = Vector2.new(0.5, 1),
+				BackgroundColor3 = Color3.fromRGB(255,255,255),
+				BackgroundTransparency = 0.985,
+				AutoButtonColor = false,
+				Text = "",
+				ZIndex = 30,
 			}, {
-				Creator.NewRoundFrame(Window.UICorner-(Window.UIPadding/2), "Squircle", {
-					Size = UDim2.new(1,0,1,0),
-					ThemeTag = {
-						ImageColor3 = "Text",
-					},
-					ImageTransparency = 1, -- .94
-					Name = "UserIcon",
-				}, {
-					New("ImageLabel", {
-						Image = ImageId,
-						BackgroundTransparency = 1,
-						Size = UDim2.new(0,42,0,42),
-						ThemeTag = {
-							BackgroundColor3 = "Text",
-						},
-						--BackgroundTransparency = .93,
-					}, {
-						New("UICorner", {
-							CornerRadius = UDim.new(1,0)
-						})
-					}),
-					New("Frame", {
-						AutomaticSize = "XY",
-						BackgroundTransparency = 1,
-					}, {
-						New("TextLabel", {
-							Text = Window.User.Anonymous and "Anonymous" or Window.User.DisplayName or LocalPlayer.DisplayName,
-							TextSize = 17,
-							ThemeTag = {
-								TextColor3 = "Text",
-							},
-							FontFace = Font.new(Creator.Font, Enum.FontWeight.SemiBold),
-							AutomaticSize = "Y",
-							BackgroundTransparency = 1,
-							Size = UDim2.new(1,-(42/2)-6,0,0),
-							TextTruncate = "AtEnd",
-							TextXAlignment = "Left",
-						}),
-						New("TextLabel", {
-							Text = Window.User.Anonymous and "@anonymous" or Window.User.Name or "@" .. LocalPlayer.Name,
-							TextSize = 15,
-							TextTransparency = .6,
-							ThemeTag = {
-								TextColor3 = "Text",
-							},
-							FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
-							AutomaticSize = "Y",
-							BackgroundTransparency = 1, 
-							Size = UDim2.new(1,-(42/2)-6,0,0),
-							TextTruncate = "AtEnd",
-							TextXAlignment = "Left",
-						}),
-						New("UIListLayout", {
-							Padding = UDim.new(0,4),
-							HorizontalAlignment = "Left",
-						})
-					}),
-					New("UIListLayout", {
-						Padding = UDim.new(0,Window.UIPadding),
-						FillDirection = "Horizontal",
-						VerticalAlignment = "Center",
-					}),
-					New("UIPadding", {
-						PaddingLeft = UDim.new(0,Window.UIPadding/2),
-						PaddingRight = UDim.new(0,Window.UIPadding/2),
-					})
-				})
+				New("UICorner", {CornerRadius = UDim.new(1,0)}),
+				New("UIStroke", {Color = Color3.fromRGB(225,242,255), Transparency = 0.42, Thickness = 1}),
+				New("ImageLabel", {
+					Name = "Avatar",
+					Image = ImageId,
+					Size = UDim2.new(1,-6,1,-6),
+					Position = UDim2.new(0.5,0,0.5,0),
+					AnchorPoint = Vector2.new(0.5,0.5),
+					BackgroundTransparency = 1,
+					ZIndex = 31,
+				}, {New("UICorner", {CornerRadius = UDim.new(1,0)})})
 			})
 
 			Creator.AddSignal(UserIcon.MouseEnter, function()
-				Tween(UserIcon.UserIcon, 0.04, {ImageTransparency = .94}):Play()
+				Tween(UserIcon, 0.12, {BackgroundTransparency = 0.94}):Play()
 			end)
 			Creator.AddSignal(UserIcon.InputEnded, function()
-				Tween(UserIcon.UserIcon, 0.04, {ImageTransparency = 1}):Play()
+				Tween(UserIcon, 0.12, {BackgroundTransparency = 0.985}):Play()
 			end)
 			Creator.AddSignal(UserIcon.MouseButton1Click, function()
 				local displayName = Window.User.Anonymous and "Anonymous" or (Window.User.DisplayName or LocalPlayer.DisplayName)
@@ -3749,7 +3705,7 @@ function WindUI:CreateWindow(Config)
 				}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
 
 				Tween(Window.UIElements.Main.Background.ImageLabel, 0.2, {ImageTransparency = Window.BackgroundImageTransparency}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-				local blurTarget = isGlass and 0.82 or (isTrans and 0.65 or 1)
+				local blurTarget = isGlass and 0.94 or (isTrans and 0.65 or 1)
 				Tween(Blur, 0.3, {ImageTransparency = blurTarget}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				if UIStroke then
 					Tween(UIStroke, 0.25, {Transparency = isGlass and 0.7 or 0.8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
@@ -3908,7 +3864,7 @@ function WindUI:CreateWindow(Config)
 			end
 			local bgTrans = Value and ((Window.Glassmorphic and math.clamp(Config.WindUI.TransparencyValue or 0.78, 0.68, 0.88)) or (Config.WindUI.TransparencyValue or 0.15)) or 0
 			Window.UIElements.Main.Background.ImageTransparency = bgTrans
-			Window.UIElements.MainBar.Background.ImageTransparency = Value and (Window.Glassmorphic and 0.90 or 0.92) or 0.95
+			Window.UIElements.MainBar.Background.ImageTransparency = Value and (Window.Glassmorphic and 0.965 or 0.92) or 0.95
 		end
 
 
@@ -7073,9 +7029,22 @@ function WindUI:CreateWindow(Config)
 			local SearchLabel = CreateLabel("Search", "search", Window.UIElements.SideBarContainer)
 			SearchLabel.Size = UDim2.new(0,38,0,34)
 			SearchLabel.Position = UDim2.new(0,Window.UIPadding/2,0,2)
-			SearchLabel.BackgroundTransparency = 0.94
+			SearchLabel.BackgroundColor3 = Color3.fromRGB(255,255,255)
+			SearchLabel.BackgroundTransparency = 0.985
 			SearchLabel.AutoButtonColor = false
 			SearchLabel.Name = "SearchButton"
+			SearchLabel.ZIndex = 51
+			SearchLabel.Position = UDim2.new(0,Window.UIPadding/2,0,2)
+			SearchLabel.Size = UDim2.new(0,34,0,34)
+			pcall(function()
+				local lucide = Creator.Icon("search")
+				SearchLabel.Image = lucide[1]
+				SearchLabel.ImageRectSize = lucide[2].ImageRectSize
+				SearchLabel.ImageRectOffset = lucide[2].ImageRectPosition
+				SearchLabel.ImageColor3 = Color3.fromRGB(235,246,255)
+				SearchLabel.ImageTransparency = 0.05
+			end)
+			if not SearchLabel:FindFirstChildOfClass("UIStroke") then New("UIStroke", {Color = Color3.fromRGB(220,240,255), Transparency = 0.68, Thickness = 1, Parent = SearchLabel}) end
 			for _, child in ipairs(SearchLabel:GetDescendants()) do
 				if child:IsA("TextLabel") then child.Visible = false end
 			end
@@ -7148,8 +7117,7 @@ function WindUI:CreateWindow(Config)
 	WindUI.Glassmorphic = Config.Glassmorphic or false
 	if WindUI.Glassmorphic then
 		-- Subtle dark glass - stays grey, not washed white
-		WindUI.TransparencyValue = Config.TransparencyValue or 0.22
-		math.clamp(WindUI.TransparencyValue, 0.15, 0.35)
+		WindUI.TransparencyValue = Config.TransparencyValue or 0.08
 	end
 	local Window = CreateWindow(Config)
 	WindUI.Window = Window
