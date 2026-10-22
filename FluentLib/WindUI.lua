@@ -891,28 +891,21 @@ NormalUI = (function(...)
 			})
 		})
 
-		local ButtonScale = New("UIScale", { Scale = 1, Parent = ButtonFrame })
 		Creator.AddSignal(ButtonFrame.MouseEnter, function()
-			Tween(ButtonFrame.Frame, .1, {ImageTransparency = .88}):Play()
-			Tween(ButtonScale, .12, {Scale = 1.025}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			Tween(ButtonFrame.Frame, .047, {ImageTransparency = .95}):Play()
 		end)
 		Creator.AddSignal(ButtonFrame.MouseLeave, function()
-			Tween(ButtonFrame.Frame, .12, {ImageTransparency = 1}):Play()
-			Tween(ButtonScale, .14, {Scale = 1}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-		end)
-		Creator.AddSignal(ButtonFrame.MouseButton1Down, function()
-			Tween(ButtonScale, .06, {Scale = 0.96}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			Tween(ButtonFrame.Frame, .06, {ImageTransparency = .72}):Play()
+			Tween(ButtonFrame.Frame, .047, {ImageTransparency = 1}):Play()
 		end)
 		Creator.AddSignal(ButtonFrame.MouseButton1Up, function()
-			Tween(ButtonScale, .18, {Scale = 1.03}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-			task.delay(0.1, function()
-				Tween(ButtonScale, .16, {Scale = 1}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-				Tween(ButtonFrame.Frame, .14, {ImageTransparency = 1}):Play()
-			end)
-			if Dialog then Dialog:Close()() end
-			if Callback then Creator.SafeCallback(Callback) end
+			if Dialog then
+				Dialog:Close()()
+			end
+			if Callback then
+				Creator.SafeCallback(Callback)
+			end
 		end)
+
 		return ButtonFrame
 	end
 
@@ -1160,24 +1153,48 @@ NormalUI = (function(...)
 			})
 		})
 
-		local ToggleScale = New("UIScale", { Scale = 1, Parent = ToggleFrame })
 		function Toggle:Set(Toggled)
-			Tween(ToggleScale, 0.07, {Scale = 0.92}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			task.delay(0.06, function()
-				Tween(ToggleScale, 0.22, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-			end)
 			if Toggled then
-				Tween(ToggleFrame.Frame, 0.26, { Position = UDim2.new(1, -18 - 4, 0.5, 0) }, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-				Tween(ToggleFrame.Layer, 0.16, { ImageTransparency = 0 }):Play()
-				Tween(ToggleFrame.Stroke, 0.16, { ImageTransparency = 0.95 }):Play()
-				if IconToggleFrame then Tween(IconToggleFrame, 0.16, { ImageTransparency = 0 }):Play() end
+				Tween(ToggleFrame.Frame, 0.1, {
+					Position = UDim2.new(1, -18 - 4, 0.5, 0),
+					--Size = UDim2.new(0,20,0,20),
+				}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+				Tween(ToggleFrame.Layer, 0.1, {
+					ImageTransparency = 0,
+				}):Play()
+				Tween(ToggleFrame.Stroke, 0.1, {
+					ImageTransparency = 0.95,
+				}):Play()
+
+				if IconToggleFrame then 
+					Tween(IconToggleFrame, 0.1, {
+						ImageTransparency = 0,
+					}):Play()
+				end
 			else
-				Tween(ToggleFrame.Frame, 0.26, { Position = UDim2.new(0, 4, 0.5, 0), Size = UDim2.new(0,18,0,18) }, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-				Tween(ToggleFrame.Layer, 0.16, { ImageTransparency = 1 }):Play()
-				Tween(ToggleFrame.Stroke, 0.16, { ImageTransparency = 1 }):Play()
-				if IconToggleFrame then Tween(IconToggleFrame, 0.16, { ImageTransparency = 1 }):Play() end
+				Tween(ToggleFrame.Frame, 0.1, {
+					Position = UDim2.new(0, 4, 0.5, 0),
+					Size = UDim2.new(0,18,0,18),
+				}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+				Tween(ToggleFrame.Layer, 0.1, {
+					ImageTransparency = 1,
+				}):Play()
+				Tween(ToggleFrame.Stroke, 0.1, {
+					ImageTransparency = 1,
+				}):Play()
+
+				if IconToggleFrame then 
+					Tween(IconToggleFrame, 0.1, {
+						ImageTransparency = 1,
+					}):Play()
+				end
 			end
-			if Callback then task.spawn(Creator.SafeCallback, Callback, Toggled) end
+
+			if Callback then
+				task.spawn(Creator.SafeCallback, Callback, Toggled)
+			end
+
+			--Toggled = not Toggled
 		end
 
 		table.insert(Creator.Toggles, Toggle)
@@ -1884,18 +1901,16 @@ NormalElement = (function()
 			ZIndex = 9999999,
 		})
 
-		-- Solid grey boxes matching button style; glass only adds slight depth
-		local elemTrans = Element.Color and .18 or ((WindUI and WindUI.Glassmorphic) and 0.955 or .95)
 		Element.UIElements.Main = NewRoundFrame(Element.UICorner, "Squircle", {
 			Size = UDim2.new(1,0,0,50),
 			AutomaticSize = "Y",
-			ImageTransparency = elemTrans,
+			ImageTransparency = Element.Color and .1 or .95,
 			--Text = "",
 			--TextTransparency = 1,
 			--AutoButtonColor = false,
 			Parent = Config.Parent,
 			ThemeTag = {
-				ImageColor3 = not Element.Color and (WindUI and WindUI.Glassmorphic and Color3.fromRGB(255,255,255) or "Text") or nil
+				ImageColor3 = not Element.Color and "Text" or nil
 			},
 			ImageColor3 = Element.Color and Color3.fromHex(Creator.Colors[Element.Color]) or nil
 		}, {
@@ -1912,12 +1927,12 @@ NormalElement = (function()
 		if Element.Hover then
 			Creator.AddSignal(Element.UIElements.Main.MouseEnter, function()
 				if CanHover then
-					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .22 or .945}):Play()
+					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .15 or .9}):Play()
 				end
 			end)
 			Creator.AddSignal(Element.UIElements.Main.InputEnded, function()
 				if CanHover then
-					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .18 or .965}):Play()
+					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .1 or .95}):Play()
 				end
 			end)
 		end
@@ -2033,10 +2048,8 @@ WindUI = {
 
 	},
 	Transparent = false,
-	Glassmorphic = false,
 
 	TransparencyValue = .15,
-	NotificationPosition = "bottom-right",
 
 	ConfigManager = nil
 }
@@ -2098,7 +2111,7 @@ ProtectGui(WindUI.DropdownGui)
 
 Creator.Init(WindUI)
 
-math.clamp(WindUI.TransparencyValue, 0, 0.5)
+math.clamp(WindUI.TransparencyValue, 0, 0.4)
 
 local Creator = NormalCreator
 local New = Creator.New
@@ -2117,41 +2130,18 @@ local Notify = {
 
 function Notify.Init(Parent)
 	local NotModule = {
-		Lower = false,
-		Position = "bottom-right",
+		Lower = false
 	}
-	local PositionMap = {
-		["bottom-right"]  = { Pos = UDim2.new(1, -29, 1, -29), Anchor = Vector2.new(1, 1), VAlign = "Bottom", HAlign = "Center" },
-		["bottom-left"]   = { Pos = UDim2.new(0, 29, 1, -29), Anchor = Vector2.new(0, 1), VAlign = "Bottom", HAlign = "Center" },
-		["bottom-middle"] = { Pos = UDim2.new(0.5, 0, 1, -29), Anchor = Vector2.new(0.5, 1), VAlign = "Bottom", HAlign = "Center" },
-		["top-right"]     = { Pos = UDim2.new(1, -29, 0, 56), Anchor = Vector2.new(1, 0), VAlign = "Top", HAlign = "Center" },
-		["top-left"]      = { Pos = UDim2.new(0, 29, 0, 56), Anchor = Vector2.new(0, 0), VAlign = "Top", HAlign = "Center" },
-		["top-middle"]    = { Pos = UDim2.new(0.5, 0, 0, 56), Anchor = Vector2.new(0.5, 0), VAlign = "Top", HAlign = "Center" },
-		["middle"]        = { Pos = UDim2.new(0.5, 0, 0.5, 0), Anchor = Vector2.new(0.5, 0.5), VAlign = "Center", HAlign = "Center" },
-		["center"]        = { Pos = UDim2.new(0.5, 0, 0.5, 0), Anchor = Vector2.new(0.5, 0.5), VAlign = "Center", HAlign = "Center" },
-		["left-middle"]   = { Pos = UDim2.new(0, 29, 0.5, 0), Anchor = Vector2.new(0, 0.5), VAlign = "Center", HAlign = "Center" },
-		["right-middle"]  = { Pos = UDim2.new(1, -29, 0.5, 0), Anchor = Vector2.new(1, 0.5), VAlign = "Center", HAlign = "Center" },
-	}
-	NotModule.PositionMap = PositionMap
-	function NotModule.SetPosition(pos)
-		pos = string.lower(tostring(pos or "bottom-right"))
-		local data = PositionMap[pos] or PositionMap["bottom-right"]
-		NotModule.Position = pos
-		NotModule.Frame.Position = data.Pos
-		NotModule.Frame.AnchorPoint = data.Anchor
-		local layout = NotModule.Frame:FindFirstChildOfClass("UIListLayout")
-		if layout then layout.VerticalAlignment = data.VAlign; layout.HorizontalAlignment = data.HAlign end
-	end
+
 	function NotModule.SetLower(val)
 		NotModule.Lower = val
-		if NotModule.Position:find("bottom") then
-			NotModule.Frame.Size = val and Notify.SizeLower or Notify.Size
-		end
+		NotModule.Frame.Size = val and Notify.SizeLower or Notify.Size
 	end
+
 	NotModule.Frame = New("Frame", {
-		Position = UDim2.new(1, -29, 1, -29),
-		AnchorPoint = Vector2.new(1, 1),
-		Size = Notify.Size,
+		Position = UDim2.new(1,-116/4,0,56),
+		AnchorPoint = Vector2.new(1,0),
+		Size = Notify.Size ,
 		Parent = Parent,
 		BackgroundTransparency = 1,
         --[[ScrollingDirection = "Y",
@@ -2403,8 +2393,6 @@ end
 local Holder = Notify.Init(WindUI.NotificationGui)
 
 function WindUI:Notify(Config)
-	local pos = string.lower(tostring(Config.Position or WindUI.NotificationPosition or "bottom-right"))
-	if Holder.Position ~= pos then Holder.SetPosition(pos) end
 	Config.Holder = Holder.Frame
 	Config.Window = WindUI.Window
 	Config.WindUI = WindUI
@@ -2413,12 +2401,6 @@ end
 
 function WindUI:SetNotificationLower(Val)
 	Holder.SetLower(Val)
-end
-
-function WindUI:SetNotificationPosition(Pos)
-	Pos = string.lower(tostring(Pos or "bottom-right"))
-	WindUI.NotificationPosition = Pos
-	Holder.SetPosition(Pos)
 end
 
 function WindUI:SetFont(FontId)
@@ -2451,12 +2433,6 @@ function WindUI:GetCurrentTheme()
 end
 function WindUI:GetTransparency()
 	return WindUI.Transparent or false
-end
-function WindUI:GetGlassmorphic()
-	return WindUI.Glassmorphic or false
-end
-function WindUI:GetNotificationPosition()
-	return WindUI.NotificationPosition or "bottom-right"
 end
 function WindUI:GetWindowSize()
 	return WindUI.ScreenGui.UIElements.Main.Size
@@ -2839,8 +2815,7 @@ function WindUI:CreateWindow(Config)
 				0, math.clamp(Config.Size.X.Offset, 480, 700),
 				0, math.clamp(Config.Size.Y.Offset, 350, 520)) or UDim2.new(0,580,0,460),
 			ToggleKey = Config.ToggleKey or Enum.KeyCode.LeftControl,
-			Transparent = Config.Transparent or Config.Glassmorphic or false,
-			Glassmorphic = Config.Glassmorphic or false,
+			Transparent = Config.Transparent or false,
 			HideSearchBar = Config.HideSearchBar or false,
 			ScrollBarEnabled = Config.ScrollBarEnabled or false,
 			Position = UDim2.new(
@@ -2941,9 +2916,9 @@ function WindUI:CreateWindow(Config)
 				1,
 				Window.ScrollBarEnabled and -3-(Window.UIPadding/2) or 0,
 				1, 
-				(not Window.HideSearchBar and -39-6 or 0) - 32
+				not Window.HideSearchBar and -39-6 or 0
 			),
-			Position = UDim2.new(0,0,1,-42),
+			Position = UDim2.new(0,0,1,0),
 			AnchorPoint = Vector2.new(0,1),
 			BackgroundTransparency = 1,
 			ScrollBarThickness = 0,
@@ -3006,8 +2981,6 @@ function WindUI:CreateWindow(Config)
 		end
 
 
-		-- Content panel: lightweight clear glass; let the game world show through
-		local mainBarInitTrans = Window.Glassmorphic and 0.965 or ((Window.Transparent) and 0.94 or 0.95)
 		Window.UIElements.MainBar = New("Frame", {
 			Size = UDim2.new(1,-Window.UIElements.SideBarContainer.AbsoluteSize.X,1,-52),
 			Position = UDim2.new(1,0,1,0),
@@ -3018,7 +2991,7 @@ function WindUI:CreateWindow(Config)
 				Size = UDim2.new(1,0,1,0),
 				ImageColor3 = Color3.new(1,1,1),
 				ZIndex = 3,
-				ImageTransparency = mainBarInitTrans,
+				ImageTransparency = .95,
 				Name = "Background",
 			}),
 			New("UIPadding", {
@@ -3028,94 +3001,6 @@ function WindUI:CreateWindow(Config)
 				PaddingBottom = UDim.new(0,Window.UIPadding/2),
 			})
 		})
-
-		-- iOS-inspired glass finish: translucent layered surfaces, fine rim and moving sheen.
-		if Window.Glassmorphic then
-			local function addGlassRim(parent, radius)
-				local rim = New("UICorner", {CornerRadius = UDim.new(0, radius), Parent = parent})
-				local stroke = New("UIStroke", {
-					Color = Color3.fromRGB(225, 241, 255),
-					Transparency = 0.48,
-					Thickness = 1,
-					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-					Parent = parent,
-				})
-				local sheen = New("UIGradient", {
-					Rotation = 35,
-					Color = ColorSequence.new({
-						ColorSequenceKeypoint.new(0, Color3.fromRGB(255,255,255)),
-						ColorSequenceKeypoint.new(0.42, Color3.fromRGB(185,220,255)),
-						ColorSequenceKeypoint.new(1, Color3.fromRGB(255,255,255)),
-					}),
-					Transparency = NumberSequence.new({
-						NumberSequenceKeypoint.new(0, 0.94),
-						NumberSequenceKeypoint.new(0.5, 0.985),
-						NumberSequenceKeypoint.new(1, 0.93),
-					}),
-					Parent = parent,
-				})
-				task.spawn(function()
-					while parent.Parent do
-						Tween(sheen, 4.5, {Rotation = sheen.Rotation + 360}, Enum.EasingStyle.Linear):Play()
-						task.wait(4.5)
-					end
-				end)
-				return stroke
-			end
-			local glassBg = Window.UIElements.MainBar:FindFirstChild("Background")
-			if glassBg then addGlassRim(glassBg, Window.UICorner) end
-		end
-
-		-- Compact navigation controls: icon-only Search, with collapse immediately to its right.
-		local sidebarCollapsed = false
-		local expandedSidebarWidth = Window.SideBarWidth
-		local compactSidebarWidth = 58
-		local sidebarToggle = New("ImageButton", {
-			Name = "SidebarCollapseButton", Image = Creator.Icon("panel-left-close")[1],
-			ImageRectSize = Creator.Icon("panel-left-close")[2].ImageRectSize,
-			ImageRectOffset = Creator.Icon("panel-left-close")[2].ImageRectPosition,
-			ImageColor3 = Color3.fromRGB(235,246,255), ImageTransparency = 0.05,
-			BackgroundColor3 = Color3.fromRGB(255,255,255), BackgroundTransparency = 0.985,
-			AutoButtonColor = false, Size = UDim2.new(0,34,0,34),
-			Position = UDim2.new(0, Window.UIPadding/2 + 40, 0, 2), ZIndex = 50,
-			Parent = Window.UIElements.SideBarContainer,
-		}, {New("UICorner", {CornerRadius = UDim.new(0,10)}), New("UIStroke", {Color = Color3.fromRGB(220,240,255), Transparency = 0.68, Thickness = 1})})
-		local savedLabelStates = {}
-		local savedIconPositions = {}
-		local function setSidebarCollapsed(collapsed)
-			sidebarCollapsed = collapsed
-			local width = collapsed and compactSidebarWidth or expandedSidebarWidth
-			Tween(Window.UIElements.SideBarContainer, 0.25, {Size = UDim2.new(0,width,Window.UIElements.SideBarContainer.Size.Y.Scale,Window.UIElements.SideBarContainer.Size.Y.Offset)}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			Tween(Window.UIElements.MainBar, 0.25, {Size = UDim2.new(1,-width,1,-52)}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			local iconName = collapsed and "panel-left-open" or "panel-left-close"
-			local iconData = Creator.Icon(iconName)
-			sidebarToggle.Image = iconData[1]
-			sidebarToggle.ImageRectSize = iconData[2].ImageRectSize
-			sidebarToggle.ImageRectOffset = iconData[2].ImageRectPosition
-			for _, obj in ipairs(Window.UIElements.SideBar:GetDescendants()) do
-				if obj:IsA("TextLabel") then
-					if savedLabelStates[obj] == nil then savedLabelStates[obj] = obj.Visible end
-					obj.Visible = collapsed and false or savedLabelStates[obj]
-				elseif obj:IsA("TextButton") then
-					if obj.Name ~= "SidebarCollapseButton" and obj.Name ~= "SearchButton" then
-						if savedLabelStates[obj] == nil then savedLabelStates[obj] = obj.Text end
-						obj.Text = collapsed and "" or savedLabelStates[obj]
-					end
-				elseif obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
-					if savedIconPositions[obj] == nil then savedIconPositions[obj] = {obj.AnchorPoint, obj.Position} end
-					if obj.Name == "Icon" then
-						if collapsed then
-							obj.AnchorPoint = Vector2.new(0.5, savedIconPositions[obj][1].Y)
-							obj.Position = UDim2.new(0.5,0,savedIconPositions[obj][2].Y.Scale,savedIconPositions[obj][2].Y.Offset)
-						else
-							obj.AnchorPoint = savedIconPositions[obj][1]
-							obj.Position = savedIconPositions[obj][2]
-						end
-					end
-				end
-			end
-		end
-		Creator.AddSignal(sidebarToggle.Activated, function() setSidebarCollapsed(not sidebarCollapsed) end)
 
 		local Blur = New("ImageLabel", {
 			Image = "rbxassetid://8992230677",
@@ -3301,53 +3186,93 @@ function WindUI:CreateWindow(Config)
 			)
 
 			UserIcon = New("TextButton", {
-				Name = "ProfileButton",
-				Size = UDim2.new(0, 48, 0, 48),
-				Position = UDim2.new(0.5, 0, 1, -10),
-				AnchorPoint = Vector2.new(0.5, 1),
-				BackgroundColor3 = Color3.fromRGB(255,255,255),
-				BackgroundTransparency = 0.985,
-				AutoButtonColor = false,
-				Text = "",
-				ZIndex = 30,
+				Size = UDim2.new(0,
+					(Window.UIElements.SideBarContainer.AbsoluteSize.X)-(Window.UIPadding/2),
+					0,
+					42+(Window.UIPadding)
+				),
+				Position = UDim2.new(0,Window.UIPadding/2,1,-(Window.UIPadding/2)),
+				AnchorPoint = Vector2.new(0,1),
+				BackgroundTransparency = 1,
 			}, {
-				New("UICorner", {CornerRadius = UDim.new(1,0)}),
-				New("UIStroke", {Color = Color3.fromRGB(225,242,255), Transparency = 0.42, Thickness = 1}),
-				New("ImageLabel", {
-					Name = "Avatar",
-					Image = ImageId,
-					Size = UDim2.new(1,-6,1,-6),
-					Position = UDim2.new(0.5,0,0.5,0),
-					AnchorPoint = Vector2.new(0.5,0.5),
-					BackgroundTransparency = 1,
-					ZIndex = 31,
-				}, {New("UICorner", {CornerRadius = UDim.new(1,0)})})
+				Creator.NewRoundFrame(Window.UICorner-(Window.UIPadding/2), "Squircle", {
+					Size = UDim2.new(1,0,1,0),
+					ThemeTag = {
+						ImageColor3 = "Text",
+					},
+					ImageTransparency = 1, -- .94
+					Name = "UserIcon",
+				}, {
+					New("ImageLabel", {
+						Image = ImageId,
+						BackgroundTransparency = 1,
+						Size = UDim2.new(0,42,0,42),
+						ThemeTag = {
+							BackgroundColor3 = "Text",
+						},
+						--BackgroundTransparency = .93,
+					}, {
+						New("UICorner", {
+							CornerRadius = UDim.new(1,0)
+						})
+					}),
+					New("Frame", {
+						AutomaticSize = "XY",
+						BackgroundTransparency = 1,
+					}, {
+						New("TextLabel", {
+							Text = Window.User.Anonymous and "Anonymous" or Window.User.DisplayName or LocalPlayer.DisplayName,
+							TextSize = 17,
+							ThemeTag = {
+								TextColor3 = "Text",
+							},
+							FontFace = Font.new(Creator.Font, Enum.FontWeight.SemiBold),
+							AutomaticSize = "Y",
+							BackgroundTransparency = 1,
+							Size = UDim2.new(1,-(42/2)-6,0,0),
+							TextTruncate = "AtEnd",
+							TextXAlignment = "Left",
+						}),
+						New("TextLabel", {
+							Text = Window.User.Anonymous and "@anonymous" or Window.User.Name or "@" .. LocalPlayer.Name,
+							TextSize = 15,
+							TextTransparency = .6,
+							ThemeTag = {
+								TextColor3 = "Text",
+							},
+							FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
+							AutomaticSize = "Y",
+							BackgroundTransparency = 1, 
+							Size = UDim2.new(1,-(42/2)-6,0,0),
+							TextTruncate = "AtEnd",
+							TextXAlignment = "Left",
+						}),
+						New("UIListLayout", {
+							Padding = UDim.new(0,4),
+							HorizontalAlignment = "Left",
+						})
+					}),
+					New("UIListLayout", {
+						Padding = UDim.new(0,Window.UIPadding),
+						FillDirection = "Horizontal",
+						VerticalAlignment = "Center",
+					}),
+					New("UIPadding", {
+						PaddingLeft = UDim.new(0,Window.UIPadding/2),
+						PaddingRight = UDim.new(0,Window.UIPadding/2),
+					})
+				})
 			})
 
-			Creator.AddSignal(UserIcon.MouseEnter, function()
-				Tween(UserIcon, 0.12, {BackgroundTransparency = 0.94}):Play()
-			end)
-			Creator.AddSignal(UserIcon.InputEnded, function()
-				Tween(UserIcon, 0.12, {BackgroundTransparency = 0.985}):Play()
-			end)
-			Creator.AddSignal(UserIcon.MouseButton1Click, function()
-				local displayName = Window.User.Anonymous and "Anonymous" or (Window.User.DisplayName or LocalPlayer.DisplayName)
-				local userName = Window.User.Anonymous and "@anonymous" or (Window.User.Name or ("@" .. LocalPlayer.Name))
-				local userId = Window.User.Anonymous and "Hidden" or tostring(LocalPlayer.UserId)
-				Window:Dialog({
-					Icon = "user",
-					Title = displayName,
-					Content = "Username: " .. userName .. "\nUser ID: " .. userId,
-					Buttons = {
-						{ Title = "Close", Variant = "Secondary", Callback = function() end },
-						{ Title = "Copy User ID", Icon = "copy", Variant = "Primary", Callback = function()
-							pcall(function() setclipboard(tostring(LocalPlayer.UserId)) end)
-							Config.WindUI:Notify({ Title = "Copied", Content = "User ID copied.", Icon = "check", Duration = 3 })
-						end },
-					},
-				})
-				if Window.User.Callback then task.spawn(Creator.SafeCallback, Window.User.Callback) end
-			end)
+			if Window.User.Callback then
+				Creator.AddSignal(UserIcon.MouseButton1Click, Window.User.Callback)
+				Creator.AddSignal(UserIcon.MouseEnter, function()
+					Tween(UserIcon.UserIcon, 0.04, {ImageTransparency = .94}):Play()
+				end)
+				Creator.AddSignal(UserIcon.InputEnded, function()
+					Tween(UserIcon.UserIcon, 0.04, {ImageTransparency = 1}):Play()
+				end)
+			end
 		end
 
 		local Outline1, Outline2 = nil, nil
@@ -3691,13 +3616,8 @@ function WindUI:CreateWindow(Config)
 				task.wait(.06)
 				Window.Closed = false
 
-				local isGlass = Window.Glassmorphic or Config.Glassmorphic or (WindUI and WindUI.Glassmorphic)
-				local isTrans = isGlass or Window.Transparent or Config.Transparent
-				-- Clear glass: high image transparency avoids the opaque grey/frosted slab
-				local bgTrans = isGlass and math.clamp((Config.WindUI and Config.WindUI.TransparencyValue) or 0.78, 0.68, 0.88) or (isTrans and ((Config.WindUI and Config.WindUI.TransparencyValue) or 0.15) or 0)
-
-				Tween(Window.UIElements.Main.Background, 0.25, {
-					ImageTransparency = bgTrans,
+				Tween(Window.UIElements.Main.Background, 0.2, {
+					ImageTransparency = Config.Transparent and Config.WindUI.TransparencyValue or 0,
 				}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 
 				Tween(Window.UIElements.Main.Background, 0.4, {
@@ -3705,10 +3625,10 @@ function WindUI:CreateWindow(Config)
 				}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
 
 				Tween(Window.UIElements.Main.Background.ImageLabel, 0.2, {ImageTransparency = Window.BackgroundImageTransparency}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-				local blurTarget = isGlass and 0.94 or (isTrans and 0.65 or 1)
-				Tween(Blur, 0.3, {ImageTransparency = blurTarget}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+				--Tween(Window.UIElements.Main.Background.UIScale, 0.2, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+				Tween(Blur, 0.25, {ImageTransparency = .7}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				if UIStroke then
-					Tween(UIStroke, 0.25, {Transparency = isGlass and 0.7 or 0.8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+					Tween(UIStroke, 0.25, {Transparency = .8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				end
 
 				task.spawn(function()
@@ -3856,15 +3776,14 @@ function WindUI:CreateWindow(Config)
 		end
 
 		function Window:ToggleTransparency(Value)
+			-- Config.Transparent = Value
 			Window.Transparent = Value
 			Config.WindUI.Transparent = Value
-			if not Value then
-				Window.Glassmorphic = false
-				Config.WindUI.Glassmorphic = false
-			end
-			local bgTrans = Value and ((Window.Glassmorphic and math.clamp(Config.WindUI.TransparencyValue or 0.78, 0.68, 0.88)) or (Config.WindUI.TransparencyValue or 0.15)) or 0
-			Window.UIElements.Main.Background.ImageTransparency = bgTrans
-			Window.UIElements.MainBar.Background.ImageTransparency = Value and (Window.Glassmorphic and 0.965 or 0.92) or 0.95
+
+			Window.UIElements.Main.Background.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
+			-- Window.UIElements.Main.Background.ImageLabel.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
+			Window.UIElements.MainBar.Background.ImageTransparency = Value and 0.97 or 0.95
+
 		end
 
 
@@ -4857,12 +4776,11 @@ function WindUI:CreateWindow(Config)
 							FillDirection = "Vertical"
 						})
 
-						local dropdownGlass = (Config.WindUI and Config.WindUI.Glassmorphic) or (WindUI and WindUI.Glassmorphic)
 						Dropdown.UIElements.Menu = Creator.NewRoundFrame(Element.MenuCorner, "Squircle", {
 							ThemeTag = {
 								ImageColor3 = "Background",
 							},
-							ImageTransparency = dropdownGlass and 0.12 or 0.05,
+							ImageTransparency = 0.05,
 							Size = UDim2.new(1,0,1,0),
 							AnchorPoint = Vector2.new(1,0),
 							Position = UDim2.new(1,0,0,0),
@@ -6212,22 +6130,11 @@ function WindUI:CreateWindow(Config)
 
 				task.spawn(function()
 					for _, ContainerObject in next, TabModuleMain.Containers do
-						if ContainerObject ~= TabModuleMain.Containers[TabIndex] then
-							local sc = ContainerObject:FindFirstChildOfClass("UIScale")
-							if sc then Tween(sc, 0.1, {Scale = 0.97}, Enum.EasingStyle.Quint, Enum.EasingDirection.In):Play() end
-							Tween(ContainerObject, 0.1, {AnchorPoint = Vector2.new(0, 0.03)}, Enum.EasingStyle.Quint, Enum.EasingDirection.In):Play()
-						end
+						ContainerObject.AnchorPoint = Vector2.new(0,0.05)
+						ContainerObject.Visible = false
 					end
-					task.wait(0.06)
-					for _, ContainerObject in next, TabModuleMain.Containers do ContainerObject.Visible = false end
-					local target = TabModuleMain.Containers[TabIndex]
-					target.Visible = true
-					target.AnchorPoint = Vector2.new(0, 0.05)
-					local sc = target:FindFirstChildOfClass("UIScale")
-					if not sc then sc = New("UIScale", {Scale = 0.96, Parent = target}) end
-					sc.Scale = 0.96
-					Tween(target, 0.25, {AnchorPoint = Vector2.new(0, 0)}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-					Tween(sc, 0.28, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+					TabModuleMain.Containers[TabIndex].Visible = true
+					Tween(TabModuleMain.Containers[TabIndex], 0.15, {AnchorPoint = Vector2.new(0,0)}, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
 				end)
 
 				TabModuleMain.OnChangeFunc(TabIndex)
@@ -7027,27 +6934,8 @@ function WindUI:CreateWindow(Config)
 			-- end, 996)
 
 			local SearchLabel = CreateLabel("Search", "search", Window.UIElements.SideBarContainer)
-			SearchLabel.Size = UDim2.new(0,38,0,34)
-			SearchLabel.Position = UDim2.new(0,Window.UIPadding/2,0,2)
-			SearchLabel.BackgroundColor3 = Color3.fromRGB(255,255,255)
-			SearchLabel.BackgroundTransparency = 0.985
-			SearchLabel.AutoButtonColor = false
-			SearchLabel.Name = "SearchButton"
-			SearchLabel.ZIndex = 51
-			SearchLabel.Position = UDim2.new(0,Window.UIPadding/2,0,2)
-			SearchLabel.Size = UDim2.new(0,34,0,34)
-			pcall(function()
-				local lucide = Creator.Icon("search")
-				SearchLabel.Image = lucide[1]
-				SearchLabel.ImageRectSize = lucide[2].ImageRectSize
-				SearchLabel.ImageRectOffset = lucide[2].ImageRectPosition
-				SearchLabel.ImageColor3 = Color3.fromRGB(235,246,255)
-				SearchLabel.ImageTransparency = 0.05
-			end)
-			if not SearchLabel:FindFirstChildOfClass("UIStroke") then New("UIStroke", {Color = Color3.fromRGB(220,240,255), Transparency = 0.68, Thickness = 1, Parent = SearchLabel}) end
-			for _, child in ipairs(SearchLabel:GetDescendants()) do
-				if child:IsA("TextLabel") then child.Visible = false end
-			end
+			SearchLabel.Size = UDim2.new(1,-Window.UIPadding/2,0,39)
+			SearchLabel.Position = UDim2.new(0,Window.UIPadding/2,0,0)
 
 			Creator.AddSignal(SearchLabel.MouseButton1Click, function()
 				if IsOpen then return end
@@ -7113,13 +7001,9 @@ function WindUI:CreateWindow(Config)
 	Creator.SetTheme(Theme)
 
 	local Filename = LocalPlayer.Name or "Unknown"
-	WindUI.Transparent = Config.Transparent or Config.Glassmorphic or false
-	WindUI.Glassmorphic = Config.Glassmorphic or false
-	if WindUI.Glassmorphic then
-		-- Subtle dark glass - stays grey, not washed white
-		WindUI.TransparencyValue = Config.TransparencyValue or 0.08
-	end
 	local Window = CreateWindow(Config)
+
+	WindUI.Transparent = Config.Transparent
 	WindUI.Window = Window
 
 
