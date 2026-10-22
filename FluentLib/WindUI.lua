@@ -3015,14 +3015,14 @@ function WindUI:CreateWindow(Config)
 
 		local Blur = New("ImageLabel", {
 			Image = "rbxassetid://8992230677",
-			ImageColor3 = Color3.new(0,0,0),
-			ImageTransparency = 1, -- 0.7
-			Size = UDim2.new(1,120,1,116),
-			Position = UDim2.new(0,-120/2,0,-116/2),
+			ImageColor3 = Color3.fromRGB(17, 8, 32),
+			ImageTransparency = 1,
+			Size = UDim2.new(1, 220, 1, 216),
+			Position = UDim2.new(0, -110, 0, -108),
 			ScaleType = "Slice",
 			SliceCenter = Rect.new(99,99,99,99),
 			BackgroundTransparency = 1,
-			ZIndex = -999999999999999,
+			ZIndex = 1,
 			Name = "Blur",
 		})
 
@@ -3671,7 +3671,7 @@ function WindUI:CreateWindow(Config)
 
 				Tween(Window.UIElements.Main.Background.ImageLabel, 0.2, {ImageTransparency = Window.BackgroundImageTransparency}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				--Tween(Window.UIElements.Main.Background.UIScale, 0.2, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-				Tween(Blur, 0.25, {ImageTransparency = Window.Transparent and 0.50 or 0.7}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+				Tween(Blur, 0.32, {ImageTransparency = Window.Transparent and 0.30 or 0.42}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				if UIStroke then
 					Tween(UIStroke, 0.25, {Transparency = Window.Transparent and 0.75 or 0.8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				end
