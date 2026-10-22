@@ -532,7 +532,7 @@ NormalDialog = (function(...)
 		Dialog.UIElements.MainContainer = Creator.NewRoundFrame(Dialog.UICorner, "Squircle", {
 			Visible = false, -- true
 			--GroupTransparency = 1, -- 0
-			ImageTransparency = Key and 0.15 or 0, 
+			ImageTransparency = Key and 0.25 or 0.20,  -- glass dialog
 			Parent = Key and DialogModule.Window or Dialog.UIElements.FullScreen,
 			Position = UDim2.new(0.5,0,0.5,0),
 			AnchorPoint = Vector2.new(0.5,0.5),
@@ -548,7 +548,7 @@ NormalDialog = (function(...)
 			}),
 			Creator.NewRoundFrame(Dialog.UICorner, "SquircleOutline", {
 				Size = UDim2.new(1,0,1,0),
-				ImageTransparency = 1,
+				ImageTransparency = 0.85,  -- soft glass border
 				ThemeTag = {
 					ImageColor3 = "Outline",
 				},
@@ -575,7 +575,7 @@ NormalDialog = (function(...)
 				if not Key then
 					Tween(Dialog.UIElements.FullScreen, 0.1, {BackgroundTransparency = .5}):Play()
 				end
-				Tween(Dialog.UIElements.MainContainer, 0.1, {ImageTransparency = 0}):Play()
+				Tween(Dialog.UIElements.MainContainer, 0.1, {ImageTransparency = Key and 0.25 or 0.20}):Play()
 				Tween(Dialog.UIElements.MainContainer.UIScale, 0.1, {Scale = 1}):Play()
 				--Tween(Dialog.UIElements.MainContainer.UIStroke, 0.1, {Transparency = 1}):Play()
 				task.spawn(function()
@@ -823,7 +823,7 @@ NormalUI = (function(...)
 				ImageColor3 = Variant == "White" and Color3.new(1,1,1) or nil,
 				Size = UDim2.new(1,0,1,0),
 				Name = "Squircle",
-				ImageTransparency = Variant == "Primary" and 0 or Variant == "White" and 0 or 1
+				ImageTransparency = Variant == "Primary" and 0.15 or Variant == "White" and 0.1 or 1  -- glass: slight translucency on primary
 			}),
 
 			Creator.NewRoundFrame(Radius, "Squircle", {
@@ -833,7 +833,7 @@ NormalUI = (function(...)
 				ImageColor3 = Color3.new(1,1,1),
 				Size = UDim2.new(1,0,1,0),
 				Name = "Special",
-				ImageTransparency = Variant == "Secondary" and 0.95 or 1
+				ImageTransparency = Variant == "Secondary" and 0.88 or 1  -- glass secondary
 			}),
 
 			Creator.NewRoundFrame(Radius, "Shadow-sm", {
@@ -845,7 +845,7 @@ NormalUI = (function(...)
 				AnchorPoint = Vector2.new(0.5,0.5),
 				Position = UDim2.new(0.5,0,0.5,0),
 				Name = "Shadow",
-				ImageTransparency = Variant == "Secondary" and 0 or 1
+				ImageTransparency = Variant == "Secondary" and 0.4 or 1  -- softer shadow for glass
 			}),
 
 			Creator.NewRoundFrame(Radius, "SquircleOutline", {
@@ -854,7 +854,7 @@ NormalUI = (function(...)
 				},
 				Size = UDim2.new(1,0,1,0),
 				ImageColor3 = Variant == "White" and Color3.new(0,0,0) or nil,
-				ImageTransparency = Variant == "Primary" and .95 or .85,
+				ImageTransparency = Variant == "Primary" and 0.90 or 0.80,  -- glass edge
 			}),
 
 			Creator.NewRoundFrame(Radius, "Squircle", {
@@ -961,20 +961,20 @@ NormalUI = (function(...)
 						ImageColor3 = "Accent",
 					},
 					Size = UDim2.new(1,0,1,0),
-					ImageTransparency = .45,
+					ImageTransparency = 0.55,  -- glass input
 				}),
 				Creator.NewRoundFrame(Radius, "SquircleOutline", {
 					ThemeTag = {
 						ImageColor3 = "Outline",
 					},
 					Size = UDim2.new(1,0,1,0),
-					ImageTransparency = .9,
+					ImageTransparency = 0.85,  -- softer glass border
 				}),
 				Creator.NewRoundFrame(Radius, "Squircle", {
 					Size = UDim2.new(1,0,1,0),
 					Name = "Frame",
 					ImageColor3 = Color3.new(1,1,1),
-					ImageTransparency = .95
+					ImageTransparency = 0.92
 				}, {
 					New("UIPadding", {
 						PaddingTop = UDim.new(0,Type == "Input" and 0 or 12),
@@ -1055,20 +1055,20 @@ NormalUI = (function(...)
 						ImageColor3 = "Accent",
 					},
 					Size = UDim2.new(1,0,1,0),
-					ImageTransparency = .45,
+					ImageTransparency = 0.55,  -- glass input
 				}),
 				Creator.NewRoundFrame(Radius, "SquircleOutline", {
 					ThemeTag = {
 						ImageColor3 = "Outline",
 					},
 					Size = UDim2.new(1,0,1,0),
-					ImageTransparency = .9,
+					ImageTransparency = 0.85,  -- softer glass border
 				}),
 				Creator.NewRoundFrame(Radius, "Squircle", {
 					Size = UDim2.new(1,0,1,0),
 					Name = "Frame",
 					ImageColor3 = Color3.new(1,1,1),
-					ImageTransparency = .95
+					ImageTransparency = 0.92
 				}, {
 					New("UIPadding", {
 						PaddingLeft = UDim.new(0,12),
@@ -1110,7 +1110,7 @@ NormalUI = (function(...)
 		end
 
 		local ToggleFrame = Creator.NewRoundFrame(Radius, "Squircle",{
-			ImageTransparency = .95,
+			ImageTransparency = 0.88, -- glass track
 			ThemeTag = {
 				ImageColor3 = "Text"
 			},
@@ -1123,13 +1123,13 @@ NormalUI = (function(...)
 				ThemeTag = {
 					ImageColor3 = "Button",
 				},
-				ImageTransparency = 1, -- 0
+				ImageTransparency = 1, -- 0 when on
 			}),
 			Creator.NewRoundFrame(Radius, "SquircleOutline", {
 				Size = UDim2.new(1,0,1,0),
 				Name = "Stroke",
 				ImageColor3 = Color3.new(1,1,1),
-				ImageTransparency = 1, -- .95
+				ImageTransparency = 1, -- .85 glass
 			}, {
 				New("UIGradient", {
 					Rotation = 90,
@@ -1221,7 +1221,7 @@ NormalUI = (function(...)
 		})
 
 		local CheckboxFrame = Creator.NewRoundFrame(Radius, "Squircle",{
-			ImageTransparency = .95, -- 0
+			ImageTransparency = 0.88, -- glass
 			ThemeTag = {
 				ImageColor3 = "Text"
 			},
@@ -1234,13 +1234,13 @@ NormalUI = (function(...)
 				ThemeTag = {
 					ImageColor3 = "Button",
 				},
-				ImageTransparency = 1, -- 0
+				ImageTransparency = 1, -- 0 when checked
 			}),
 			Creator.NewRoundFrame(Radius, "SquircleOutline", {
 				Size = UDim2.new(1,0,1,0),
 				Name = "Stroke",
 				ImageColor3 = Color3.new(1,1,1),
-				ImageTransparency = 1, -- .95
+				ImageTransparency = 1, -- glass edge
 			}, {
 				New("UIGradient", {
 					Rotation = 90,
@@ -1663,7 +1663,7 @@ NormalUI = (function(...)
 			--     ImageColor3 = "Text"
 			-- },
 			ImageColor3 = Color3.fromHex("#212121"),
-			ImageTransparency = .035,
+			ImageTransparency = 0.20,  -- glass code block
 			Size = UDim2.new(1,0,0,20+(CodeModule.Padding*2)),
 			AutomaticSize = "Y",
 			Parent = Parent,
@@ -1674,7 +1674,7 @@ NormalUI = (function(...)
 				--     ImageColor3 = "Text"
 				-- },
 				ImageColor3 = Color3.fromHex("#ffffff"),
-				ImageTransparency = .955,
+				ImageTransparency = 0.90,  -- soft glass edge
 			}),
 			New("Frame", {
 				BackgroundTransparency = 1,
@@ -1904,7 +1904,7 @@ NormalElement = (function()
 		Element.UIElements.Main = NewRoundFrame(Element.UICorner, "Squircle", {
 			Size = UDim2.new(1,0,0,50),
 			AutomaticSize = "Y",
-			ImageTransparency = Element.Color and .1 or .95,
+			ImageTransparency = Element.Color and 0.25 or 0.88, -- glassmorphism: softer translucency
 			--Text = "",
 			--TextTransparency = 1,
 			--AutoButtonColor = false,
@@ -1927,12 +1927,12 @@ NormalElement = (function()
 		if Element.Hover then
 			Creator.AddSignal(Element.UIElements.Main.MouseEnter, function()
 				if CanHover then
-					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .15 or .9}):Play()
+					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and 0.35 or 0.80}):Play()
 				end
 			end)
 			Creator.AddSignal(Element.UIElements.Main.InputEnded, function()
 				if CanHover then
-					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and .1 or .95}):Play()
+					Tween(Element.UIElements.Main, .05, {ImageTransparency = Element.Color and 0.25 or 0.88}):Play()
 				end
 			end)
 		end
@@ -1985,6 +1985,17 @@ WindUI = {
 	Theme = nil,
 	Creator = NormalCreator,
 	Themes = {
+		Glass = {
+			Name = "Glass",
+			Accent = "#1c1c1e",
+			Outline = "#FFFFFF",
+			Text = "#FFFFFF",
+			Placeholder = "#A1A1AA",
+			Background = "#0c0c0e",
+			Button = "#3f3f46",
+			Icon = "#a1a1aa",
+		},
+
 		Dark = {
 			Name = "Dark",
 			Accent = "#18181b",
@@ -2047,9 +2058,9 @@ WindUI = {
 		},
 
 	},
-	Transparent = false,
+	Transparent = true,
 
-	TransparencyValue = .15,
+	TransparencyValue = 0.28,
 
 	ConfigManager = nil
 }
@@ -2111,7 +2122,7 @@ ProtectGui(WindUI.DropdownGui)
 
 Creator.Init(WindUI)
 
-math.clamp(WindUI.TransparencyValue, 0, 0.4)
+math.clamp(WindUI.TransparencyValue, 0, 0.5)
 
 local Creator = NormalCreator
 local New = Creator.New
@@ -2325,7 +2336,7 @@ function Notify.New(Config)
 		Position = UDim2.new(2,0,1,0),
 		AnchorPoint = Vector2.new(0,1),
 		AutomaticSize = "Y",
-		BackgroundTransparency = .25,
+		BackgroundTransparency = 0.35,  -- glass notification
 		ThemeTag = {
 			BackgroundColor3 = "Accent"
 		},
@@ -2815,7 +2826,7 @@ function WindUI:CreateWindow(Config)
 				0, math.clamp(Config.Size.X.Offset, 480, 700),
 				0, math.clamp(Config.Size.Y.Offset, 350, 520)) or UDim2.new(0,580,0,460),
 			ToggleKey = Config.ToggleKey or Enum.KeyCode.LeftControl,
-			Transparent = Config.Transparent or false,
+			Transparent = if Config.Transparent == nil then true else Config.Transparent end,
 			HideSearchBar = Config.HideSearchBar or false,
 			ScrollBarEnabled = Config.ScrollBarEnabled or false,
 			Position = UDim2.new(
@@ -2991,7 +3002,7 @@ function WindUI:CreateWindow(Config)
 				Size = UDim2.new(1,0,1,0),
 				ImageColor3 = Color3.new(1,1,1),
 				ZIndex = 3,
-				ImageTransparency = .95,
+				ImageTransparency = 0.90,  -- glass content area
 				Name = "Background",
 			}),
 			New("UIPadding", {
@@ -3340,7 +3351,7 @@ function WindUI:CreateWindow(Config)
 		}, {
 			Blur,
 			Creator.NewRoundFrame(Window.UICorner, "Squircle", {
-				ImageTransparency = 1, -- Window.Transparent and 0.25 or 0
+				ImageTransparency = Window.Transparent and (Config.WindUI.TransparencyValue or 0.28) or 1,
 				Size = UDim2.new(1,0,1,-240),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				Position = UDim2.new(0.5,0,0.5,0),
@@ -3626,9 +3637,9 @@ function WindUI:CreateWindow(Config)
 
 				Tween(Window.UIElements.Main.Background.ImageLabel, 0.2, {ImageTransparency = Window.BackgroundImageTransparency}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				--Tween(Window.UIElements.Main.Background.UIScale, 0.2, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-				Tween(Blur, 0.25, {ImageTransparency = .7}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+				Tween(Blur, 0.25, {ImageTransparency = Window.Transparent and 0.50 or 0.7}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				if UIStroke then
-					Tween(UIStroke, 0.25, {Transparency = .8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+					Tween(UIStroke, 0.25, {Transparency = Window.Transparent and 0.75 or 0.8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				end
 
 				task.spawn(function()
@@ -3776,14 +3787,19 @@ function WindUI:CreateWindow(Config)
 		end
 
 		function Window:ToggleTransparency(Value)
-			-- Config.Transparent = Value
 			Window.Transparent = Value
 			Config.WindUI.Transparent = Value
+			WindUI.Transparent = Value
 
-			Window.UIElements.Main.Background.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
-			-- Window.UIElements.Main.Background.ImageLabel.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
-			Window.UIElements.MainBar.Background.ImageTransparency = Value and 0.97 or 0.95
-
+			local tv = Value and (Config.WindUI.TransparencyValue or 0.28) or 0
+			Window.UIElements.Main.Background.ImageTransparency = tv
+			if Window.UIElements.MainBar and Window.UIElements.MainBar:FindFirstChild("Background") then
+				Window.UIElements.MainBar.Background.ImageTransparency = Value and 0.90 or 0.95
+			end
+			-- Stronger soft shadow / glass depth
+			if Blur then
+				Blur.ImageTransparency = Value and 0.50 or 0.7
+			end
 		end
 
 
@@ -4780,7 +4796,7 @@ function WindUI:CreateWindow(Config)
 							ThemeTag = {
 								ImageColor3 = "Background",
 							},
-							ImageTransparency = 0.05,
+							ImageTransparency = 0.22,  -- glass dropdown
 							Size = UDim2.new(1,0,1,0),
 							AnchorPoint = Vector2.new(1,0),
 							Position = UDim2.new(1,0,0,0),
@@ -6994,7 +7010,7 @@ function WindUI:CreateWindow(Config)
 
 	local CanLoadWindow = true
 
-	local Theme = Themes[Config.Theme or "Dark"]
+	local Theme = Themes[Config.Theme or "Glass"]
 
 	WindUI.Theme = Theme
 
@@ -7003,21 +7019,17 @@ function WindUI:CreateWindow(Config)
 	local Filename = LocalPlayer.Name or "Unknown"
 	local Window = CreateWindow(Config)
 
-	WindUI.Transparent = Config.Transparent
+	WindUI.Transparent = Window.Transparent
 	WindUI.Window = Window
 
-
-	-- function Window:ToggleTransparency(Value)
-	--     WindUI.Transparent = Value
-	--     WindUI.Window.Transparent = Value
-
-	--     Window.UIElements.Main.Background.BackgroundTransparency = Value and WindUI.TransparencyValue or 0
-	--     Window.UIElements.Main.Background.ImageLabel.ImageTransparency = Value and WindUI.TransparencyValue or 0
-	--     Window.UIElements.Main.Gradient.UIGradient.Transparency = NumberSequence.new{
-	--         NumberSequenceKeypoint.new(0, 1), 
-	--         NumberSequenceKeypoint.new(1, Value and 0.85 or 0.7),
-	--     }
-	-- end
+	-- Apply glassmorphism by default when Transparent is enabled
+	if Window.Transparent then
+		task.defer(function()
+			pcall(function()
+				Window:ToggleTransparency(true)
+			end)
+		end)
+	end
 
 	return Window
 end
