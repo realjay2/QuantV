@@ -1987,13 +1987,13 @@ WindUI = {
 	Themes = {
 		Glass = {
 			Name = "Glass",
-			Accent = "#1c1c1e",
+			Accent = "#343B49",
 			Outline = "#FFFFFF",
-			Text = "#FFFFFF",
-			Placeholder = "#A1A1AA",
-			Background = "#0c0c0e",
-			Button = "#3f3f46",
-			Icon = "#a1a1aa",
+			Text = "#F7F9FF",
+			Placeholder = "#B4BBC9",
+			Background = "#202735",
+			Button = "#657087",
+			Icon = "#D5DCE8",
 		},
 
 		Dark = {
@@ -2060,7 +2060,7 @@ WindUI = {
 	},
 	Transparent = true,
 
-	TransparencyValue = 0.28,
+	TransparencyValue = 0.18,
 
 	ConfigManager = nil
 }
@@ -2122,7 +2122,7 @@ ProtectGui(WindUI.DropdownGui)
 
 Creator.Init(WindUI)
 
-math.clamp(WindUI.TransparencyValue, 0, 0.5)
+WindUI.TransparencyValue = math.clamp(WindUI.TransparencyValue, 0, 0.5)
 
 local Creator = NormalCreator
 local New = Creator.New
@@ -3002,7 +3002,7 @@ function WindUI:CreateWindow(Config)
 				Size = UDim2.new(1,0,1,0),
 				ImageColor3 = Color3.new(1,1,1),
 				ZIndex = 3,
-				ImageTransparency = 0.90,  -- glass content area
+				ImageTransparency = 0.84,
 				Name = "Background",
 			}),
 			New("UIPadding", {
@@ -3341,6 +3341,27 @@ function WindUI:CreateWindow(Config)
 			}
 		})
 
+		local GlassStroke = New("UIStroke", {
+			Color = Color3.fromRGB(238, 245, 255),
+			Thickness = 1.15,
+			Transparency = Window.Transparent and 0.62 or 0.82,
+			ApplyStrokeMode = "Border",
+		}, {
+			New("UIGradient", {
+				Rotation = 35,
+				Color = ColorSequence.new({
+					ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+					ColorSequenceKeypoint.new(0.48, Color3.fromRGB(177, 205, 239)),
+					ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255)),
+				}),
+				Transparency = NumberSequence.new({
+					NumberSequenceKeypoint.new(0, 0.18),
+					NumberSequenceKeypoint.new(0.5, 0.55),
+					NumberSequenceKeypoint.new(1, 0.22),
+				}),
+			}),
+		})
+
 		Window.UIElements.Main = New("Frame", {
 			Size = Window.Size,
 			Position = Window.Position,
@@ -3351,7 +3372,7 @@ function WindUI:CreateWindow(Config)
 		}, {
 			Blur,
 			Creator.NewRoundFrame(Window.UICorner, "Squircle", {
-				ImageTransparency = Window.Transparent and (Config.WindUI.TransparencyValue or 0.28) or 1,
+				ImageTransparency = Window.Transparent and (Config.WindUI.TransparencyValue or 0.18) or 1,
 				Size = UDim2.new(1,0,1,-240),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				Position = UDim2.new(0.5,0,0.5,0),
@@ -3359,8 +3380,20 @@ function WindUI:CreateWindow(Config)
 				ThemeTag = {
 					ImageColor3 = "Background"
 				},
-				--ZIndex = -9999,
 			}, {
+				New("UIGradient", {
+					Rotation = 90,
+					Color = ColorSequence.new({
+						ColorSequenceKeypoint.new(0, Color3.fromRGB(72, 86, 108)),
+						ColorSequenceKeypoint.new(0.45, Color3.fromRGB(35, 43, 58)),
+						ColorSequenceKeypoint.new(1, Color3.fromRGB(18, 23, 34)),
+					}),
+					Transparency = NumberSequence.new({
+						NumberSequenceKeypoint.new(0, 0.08),
+						NumberSequenceKeypoint.new(0.5, 0.28),
+						NumberSequenceKeypoint.new(1, 0.04),
+					}),
+				}),
 				New("ImageLabel", {
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1,0,1,0),
@@ -3378,6 +3411,7 @@ function WindUI:CreateWindow(Config)
 				--     Scale = 0.95,
 				-- }),
 			}),
+			GlassStroke,
 			UIStroke,
 			UICorner,
 			FullScreenIcon,
@@ -3791,14 +3825,17 @@ function WindUI:CreateWindow(Config)
 			Config.WindUI.Transparent = Value
 			WindUI.Transparent = Value
 
-			local tv = Value and (Config.WindUI.TransparencyValue or 0.28) or 0
+			local tv = Value and (Config.WindUI.TransparencyValue or 0.18) or 0
 			Window.UIElements.Main.Background.ImageTransparency = tv
 			if Window.UIElements.MainBar and Window.UIElements.MainBar:FindFirstChild("Background") then
 				Window.UIElements.MainBar.Background.ImageTransparency = Value and 0.90 or 0.95
 			end
 			-- Stronger soft shadow / glass depth
 			if Blur then
-				Blur.ImageTransparency = Value and 0.50 or 0.7
+				Blur.ImageTransparency = Value and 0.38 or 0.72
+			end
+			if GlassStroke then
+				GlassStroke.Transparency = Value and 0.62 or 0.82
 			end
 		end
 
