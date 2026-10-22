@@ -2816,8 +2816,6 @@ function WindUI:CreateWindow(Config)
 				0, math.clamp(Config.Size.Y.Offset, 350, 520)) or UDim2.new(0,580,0,460),
 			ToggleKey = Config.ToggleKey or Enum.KeyCode.LeftControl,
 			Transparent = Config.Transparent or false,
-			Glassmorphic = Config.Glassmorphic == true,
-			SidebarCollapsed = false,
 			HideSearchBar = Config.HideSearchBar or false,
 			ScrollBarEnabled = Config.ScrollBarEnabled or false,
 			Position = UDim2.new(
@@ -2848,17 +2846,6 @@ function WindUI:CreateWindow(Config)
 
 		} -- wtf 
 
-
-		-- Glassmorphic mode uses translucent surfaces and subtle outlines throughout the window.
-		if Window.Glassmorphic then
-			Window.Transparent = true
-			Config.Transparent = true
-			Config.WindUI.TransparencyValue = math.max(Config.WindUI.TransparencyValue or 0.15, 0.22)
-			Window.HasOutline = true
-			Window.UICorner = 20
-			Window.UIPadding = 16
-			Window.BackgroundImageTransparency = math.max(Window.BackgroundImageTransparency, 0.18)
-		end
 
 		if Window.Folder then
 			makefolder("WindUI/" .. Window.Folder)
@@ -3014,48 +3001,6 @@ function WindUI:CreateWindow(Config)
 				PaddingBottom = UDim.new(0,Window.UIPadding/2),
 			})
 		})
-
-		-- Compact sidebar toggle; icon and label use the library's Lucide icon pack.
-		Window.UIElements.SidebarToggle = New("TextButton", {
-			Name = "SidebarToggle",
-			Text = "‹",
-			TextSize = 23,
-			FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
-			TextColor3 = Color3.fromRGB(220, 235, 255),
-			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-			BackgroundTransparency = Window.Glassmorphic and 0.88 or 1,
-			AutoButtonColor = false,
-			Size = UDim2.new(0, 28, 0, 28),
-			Position = UDim2.new(1, -34, 0, 5),
-			AnchorPoint = Vector2.new(0, 0),
-			ZIndex = 20,
-			Parent = Window.UIElements.SideBarContainer,
-		}, {
-			New("UICorner", {CornerRadius = UDim.new(0, 9)}),
-			New("UIStroke", {
-				Color = Color3.fromRGB(180, 215, 255),
-				Transparency = Window.Glassmorphic and 0.78 or 1,
-				Thickness = 1,
-			})
-		})
-		Creator.AddSignal(Window.UIElements.SidebarToggle.MouseButton1Click, function()
-			Window:ToggleSidebar()
-		end)
-
-		if Window.Glassmorphic then
-			for _, surface in ipairs({Window.UIElements.MainBar, Window.UIElements.SideBarContainer}) do
-				if surface then
-					surface.BackgroundTransparency = 0.9
-					surface.BackgroundColor3 = Color3.fromRGB(220, 235, 255)
-					New("UIStroke", {
-						Color = Color3.fromRGB(190, 220, 255),
-						Transparency = 0.82,
-						Thickness = 1,
-						Parent = surface
-					})
-				end
-			end
-		end
 
 		local Blur = New("ImageLabel", {
 			Image = "rbxassetid://8992230677",
@@ -3318,18 +3263,6 @@ function WindUI:CreateWindow(Config)
 					})
 				})
 			})
-
-			Window.UIElements.UserIcon = UserIcon
-
-			if Window.Glassmorphic then
-				UserIcon.UserIcon.ImageTransparency = 0.88
-				local outline = New("UIStroke", {
-					Color = Color3.fromRGB(190, 220, 255),
-					Transparency = 0.78,
-					Thickness = 1,
-					Parent = UserIcon
-				})
-			end
 
 			if Window.User.Callback then
 				Creator.AddSignal(UserIcon.MouseButton1Click, Window.User.Callback)
@@ -4002,8 +3935,7 @@ function WindUI:CreateWindow(Config)
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1,-7,0,0),
 				AutomaticSize = "Y",
-				Parent = Config.Parent,
-				Name = "Tab_" .. tostring(Tab.Title):gsub("%W", "")
+				Parent = Config.Parent
 			}, {
 				New("UIListLayout", {
 					SortOrder = "LayoutOrder",
@@ -6223,61 +6155,6 @@ function WindUI:CreateWindow(Config)
 			TabModule:SelectTab(Tab)
 		end
 
-		-- Collapse the navigation rail to centered Lucide icons, including the profile footer.
-		function Window:SetSidebarCollapsed(collapsed)
-			collapsed = collapsed == true
-			if Window.SidebarCollapsed == collapsed then return end
-			Window.SidebarCollapsed = collapsed
-			local targetWidth = collapsed and 64 or Window.SideBarWidth
-			local side = Window.UIElements.SideBarContainer
-			local mainBar = Window.UIElements.MainBar
-			if side then
-				Tween(side, 0.22, {Size = UDim2.new(0, targetWidth, 1, Window.User.Enabled and -52-42-(Window.UIPadding*2) or -52)}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			end
-			if mainBar then
-				Tween(mainBar, 0.22, {Size = UDim2.new(1, -targetWidth, 1, -52)}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			end
-			if Window.UIElements.UserIcon then
-				local profile = Window.UIElements.UserIcon
-				Tween(profile, 0.22, {Size = UDim2.new(0, targetWidth-Window.UIPadding, 0, collapsed and 48 or 42+Window.UIPadding)}):Play()
-				local profileText = profile:FindFirstChild("UserIcon", true)
-				if profileText then
-					for _, obj in ipairs(profileText:GetDescendants()) do
-						if obj:IsA("TextLabel") then obj.Visible = not collapsed end
-					end
-				end
-				local avatar = profile:FindFirstChildWhichIsA("ImageLabel", true)
-				if avatar then
-					avatar.Size = UDim2.new(0, 36, 0, 36)
-					avatar.Position = collapsed and UDim2.new(0.5,0,0.5,0) or UDim2.new()
-					avatar.AnchorPoint = collapsed and Vector2.new(0.5,0.5) or Vector2.new(0,0)
-				end
-			end
-			for _, tab in ipairs(TabModuleMain.Tabs) do
-				local main = tab.UIElements.Main
-				if main then
-					local label = main:FindFirstChild("TextLabel")
-					if label then label.Visible = not collapsed end
-					local icon = tab.UIElements.Icon
-					if icon then
-						icon.AnchorPoint = collapsed and Vector2.new(0.5,0) or Vector2.new(0,0)
-						icon.Position = collapsed and UDim2.new(0.5,0,0,6) or UDim2.new()
-					end
-					main.Size = UDim2.new(1, -7, 0, collapsed and 36 or 0)
-					main.AutomaticSize = collapsed and "None" or "Y"
-					main:SetAttribute("CollapsedTooltip", tab.Title)
-				end
-			end
-			if Window.UIElements.SidebarToggle then
-				Window.UIElements.SidebarToggle.Text = collapsed and "›" or "‹"
-				Window.UIElements.SidebarToggle.Size = UDim2.new(0, 28, 0, 28)
-				Window.UIElements.SidebarToggle.Position = UDim2.new(1, -34, 0, 5)
-			end
-		end
-
-		function Window:ToggleSidebar()
-			Window:SetSidebarCollapsed(not Window.SidebarCollapsed)
-		end
 
 		function Window:Divider()
 			local Divider = New("Frame", {
@@ -7118,16 +6995,6 @@ function WindUI:CreateWindow(Config)
 	local CanLoadWindow = true
 
 	local Theme = Themes[Config.Theme or "Dark"]
-	if Config.Glassmorphic then
-		-- Keep controls in one cool, translucent visual system instead of mixed solid fills.
-		Theme = table.clone(Theme)
-		Theme.Accent = Theme.Accent or "#2563eb"
-		Theme.Button = "#26364a"
-		Theme.Outline = "#9bbfe5"
-		Theme.Icon = "#c7d9ee"
-		Theme.Placeholder = "#9aafc7"
-		Theme.Background = "#101a2b"
-	end
 
 	WindUI.Theme = Theme
 
