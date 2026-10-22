@@ -2826,7 +2826,7 @@ function WindUI:CreateWindow(Config)
 				0, math.clamp(Config.Size.X.Offset, 480, 700),
 				0, math.clamp(Config.Size.Y.Offset, 350, 520)) or UDim2.new(0,580,0,460),
 			ToggleKey = Config.ToggleKey or Enum.KeyCode.LeftControl,
-			Transparent = if Config.Transparent == nil then true else Config.Transparent end,
+			Transparent = if Config.Transparent == nil then true else Config.Transparent,
 			HideSearchBar = Config.HideSearchBar or false,
 			ScrollBarEnabled = Config.ScrollBarEnabled or false,
 			Position = UDim2.new(
