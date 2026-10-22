@@ -15,6 +15,7 @@ local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
+local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
@@ -1987,13 +1988,13 @@ WindUI = {
 	Themes = {
 		Glass = {
 			Name = "Glass",
-			Accent = "#343B49",
-			Outline = "#FFFFFF",
-			Text = "#F7F9FF",
-			Placeholder = "#B4BBC9",
-			Background = "#202735",
-			Button = "#657087",
-			Icon = "#D5DCE8",
+			Accent = "#25272C",
+			Outline = "#AEB4BE",
+			Text = "#F2F3F5",
+			Placeholder = "#969BA4",
+			Background = "#191B20",
+			Button = "#303238",
+			Icon = "#C4C8D0",
 		},
 
 		Dark = {
@@ -3015,7 +3016,7 @@ function WindUI:CreateWindow(Config)
 
 		local Blur = New("ImageLabel", {
 			Image = "rbxassetid://8992230677",
-			ImageColor3 = Color3.fromRGB(17, 8, 32),
+			ImageColor3 = Color3.fromRGB(8, 9, 12),
 			ImageTransparency = 1,
 			Size = UDim2.new(1, 220, 1, 216),
 			Position = UDim2.new(0, -110, 0, -108),
@@ -3342,22 +3343,22 @@ function WindUI:CreateWindow(Config)
 		})
 
 		local GlassStroke = New("UIStroke", {
-			Color = Color3.fromRGB(238, 245, 255),
-			Thickness = 1.15,
-			Transparency = Window.Transparent and 0.62 or 0.82,
+			Color = Color3.fromRGB(190, 196, 207),
+			Thickness = 1,
+			Transparency = Window.Transparent and 0.84 or 0.92,
 			ApplyStrokeMode = "Border",
 		}, {
 			New("UIGradient", {
 				Rotation = 35,
 				Color = ColorSequence.new({
-					ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-					ColorSequenceKeypoint.new(0.48, Color3.fromRGB(177, 205, 239)),
-					ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255)),
+					ColorSequenceKeypoint.new(0, Color3.fromRGB(220, 224, 232)),
+					ColorSequenceKeypoint.new(0.48, Color3.fromRGB(155, 161, 173)),
+					ColorSequenceKeypoint.new(1, Color3.fromRGB(220, 224, 232)),
 				}),
 				Transparency = NumberSequence.new({
-					NumberSequenceKeypoint.new(0, 0.18),
-					NumberSequenceKeypoint.new(0.5, 0.55),
-					NumberSequenceKeypoint.new(1, 0.22),
+					NumberSequenceKeypoint.new(0, 0.72),
+					NumberSequenceKeypoint.new(0.5, 0.88),
+					NumberSequenceKeypoint.new(1, 0.74),
 				}),
 			}),
 		})
@@ -3652,6 +3653,16 @@ function WindUI:CreateWindow(Config)
 		local iconSquare = Creator.Icon("maximize")
 
 		local StartTime = 0
+		local GlassWorldBlur = Lighting:FindFirstChild("LuAuthGlassWorldBlur")
+		if not GlassWorldBlur or not GlassWorldBlur:IsA("BlurEffect") then
+			GlassWorldBlur = Instance.new("BlurEffect")
+			GlassWorldBlur.Name = "LuAuthGlassWorldBlur"
+			GlassWorldBlur.Size = 8
+			GlassWorldBlur.Enabled = false
+			GlassWorldBlur.Parent = Lighting
+		end
+		Window.GlassWorldBlur = GlassWorldBlur
+
 		function Window:Open()
 			local ActualTime = tick()
 			if ActualTime - StartTime < 0.75 then return end
@@ -3660,6 +3671,9 @@ function WindUI:CreateWindow(Config)
 			task.spawn(pcall, function()
 				task.wait(.06)
 				Window.Closed = false
+				if Window.Transparent and Window.GlassWorldBlur then
+					Window.GlassWorldBlur.Enabled = true
+				end
 
 				Tween(Window.UIElements.Main.Background, 0.2, {
 					ImageTransparency = Config.Transparent and Config.WindUI.TransparencyValue or 0,
@@ -3671,7 +3685,7 @@ function WindUI:CreateWindow(Config)
 
 				Tween(Window.UIElements.Main.Background.ImageLabel, 0.2, {ImageTransparency = Window.BackgroundImageTransparency}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				--Tween(Window.UIElements.Main.Background.UIScale, 0.2, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-				Tween(Blur, 0.32, {ImageTransparency = Window.Transparent and 0.30 or 0.42}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+				Tween(Blur, 0.32, {ImageTransparency = Window.Transparent and 0.78 or 0.88}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				if UIStroke then
 					Tween(UIStroke, 0.25, {Transparency = Window.Transparent and 0.75 or 0.8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 				end
@@ -3719,6 +3733,9 @@ function WindUI:CreateWindow(Config)
 			Window.UIElements.Main.Main.Visible = false
 			Window.CanDropdown = false
 			Window.Closed = true
+			if Window.GlassWorldBlur then
+				Window.GlassWorldBlur.Enabled = false
+			end
 
 			Tween(Window.UIElements.Main.Background, 0.32, {
 				ImageTransparency = 1,
@@ -3832,10 +3849,10 @@ function WindUI:CreateWindow(Config)
 			end
 			-- Stronger soft shadow / glass depth
 			if Blur then
-				Blur.ImageTransparency = Value and 0.38 or 0.72
+				Blur.ImageTransparency = Value and 0.78 or 0.92
 			end
 			if GlassStroke then
-				GlassStroke.Transparency = Value and 0.62 or 0.82
+				GlassStroke.Transparency = Value and 0.84 or 0.92
 			end
 		end
 
