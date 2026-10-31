@@ -27,7 +27,7 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 
 local player = Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
+local playerGui = player:WaitForChild("CoreGui")
 
 local blur = Instance.new("BlurEffect")
 blur.Size = 0
